@@ -12,15 +12,15 @@ import Receipt from './pages/Receipt/Receipt';
 
 const router = createBrowserRouter([
 	{
-		path: '/',
+		path: '/split-the-check',
 		element: <Homepage />,
 	},
 	{
-		path: '/split',
+		path: '/split-the-check/split',
 		element: <Split />,
 	},
 	{
-		path: '/receipt',
+		path: '/split-the-check/receipt',
 		element: <Receipt />,
 	},
 ]);

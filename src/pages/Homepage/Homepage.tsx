@@ -25,7 +25,7 @@ const Homepage = () => {
 					<MenuItem value={SplitChoices.SplitWithPersons}>Split With Persons</MenuItem>
 				</Select>
 			</FormControl>
-			<Button variant='contained' href={`/${choice}`}>
+			<Button variant='contained' href={`/split-the-check/${choice}`}>
 				Next
 			</Button>
 		</main>

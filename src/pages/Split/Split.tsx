@@ -27,7 +27,7 @@ const Split = () => {
 
 	const handleFormCheck = () => {
 		if (!errorSplitAmount) {
-			navigation('/receipt');
+			navigation('/split-the-check/receipt');
 		}
 	};
 
