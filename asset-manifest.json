@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/split-the-check/static/css/main.ea8250b1.css",
-    "main.js": "/split-the-check/static/js/main.13d62ab8.js",
+    "main.js": "/split-the-check/static/js/main.1a757c64.js",
     "static/js/787.0e61dbd1.chunk.js": "/split-the-check/static/js/787.0e61dbd1.chunk.js",
     "index.html": "/split-the-check/index.html",
     "main.ea8250b1.css.map": "/split-the-check/static/css/main.ea8250b1.css.map",
-    "main.13d62ab8.js.map": "/split-the-check/static/js/main.13d62ab8.js.map",
+    "main.1a757c64.js.map": "/split-the-check/static/js/main.1a757c64.js.map",
     "787.0e61dbd1.chunk.js.map": "/split-the-check/static/js/787.0e61dbd1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ea8250b1.css",
-    "static/js/main.13d62ab8.js"
+    "static/js/main.1a757c64.js"
   ]
 }
