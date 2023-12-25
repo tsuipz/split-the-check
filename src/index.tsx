@@ -1,35 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './libs/store';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Homepage from './pages/Homepage/Homepage';
 import Split from './pages/Split/Split';
 import Receipt from './pages/Receipt/Receipt';
-
-const router = createBrowserRouter([
-	{
-		path: '/split-the-check',
-		element: <Homepage />,
-	},
-	{
-		path: '/split-the-check/split',
-		element: <Split />,
-	},
-	{
-		path: '/split-the-check/receipt',
-		element: <Receipt />,
-	},
-]);
+import { SplitChoices } from './types/enums';
+import Persons from './pages/Persons/Persons';
+import SplitWithPerson from './pages/SplitWithPerson/SplitWithPerson';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<RouterProvider router={router} />
+			<BrowserRouter basename={process.env.PUBLIC_URL}>
+				<Routes>
+					<Route path='' Component={Homepage} />
+					<Route path={`/${SplitChoices.Split}`} Component={Split} />
+					<Route path='/receipt' Component={Receipt} />
+					<Route path={`/${SplitChoices.Persons}`} Component={Persons} />
+					<Route path={`/${SplitChoices.SplitWithPersons}`} Component={SplitWithPerson} />
+				</Routes>
+			</BrowserRouter>
 		</Provider>
 	</React.StrictMode>
 );

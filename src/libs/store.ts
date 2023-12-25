@@ -1,5 +1,11 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CostSymbols, SplitChoices, TaxOptions } from '../types/enums';
+import { ChangePersonCost, PersonCost } from '../types/interfaces';
+
+const personsCost: PersonCost[] = [{
+	name: '',
+	cost: 0,
+}]
 
 const initialState = {
 	choice: SplitChoices.Split,
@@ -10,12 +16,16 @@ const initialState = {
 	tipCost: 0,
 	tipSymbol: CostSymbols.Percent,
 	taxOptions: TaxOptions.PreTax,
+	personsCost: personsCost
 };
 
 const checkSlice = createSlice({
 	name: 'check',
 	initialState,
 	reducers: {
+		setInitialState: (state) => {
+			state = initialState;
+		},
 		setChoice: (state, action: PayloadAction<SplitChoices>) => {
 			state.choice = action.payload;
 		},
@@ -37,9 +47,12 @@ const checkSlice = createSlice({
 		setTipCost: (state, action: PayloadAction<number>) => {
 			state.tipCost = action.payload;
 		},
-		tipSymbol: (state, action: PayloadAction<CostSymbols>) => {
+		setTipSymbol: (state, action: PayloadAction<CostSymbols>) => {
 			state.tipSymbol = action.payload;
 		},
+		setPersonsCost: (state, action: PayloadAction<PersonCost[]>) => {
+			state.personsCost = action.payload
+		}
 	},
 });
 

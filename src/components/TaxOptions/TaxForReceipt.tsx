@@ -1,15 +1,4 @@
-import {
-	FormControl,
-	FormControlLabel,
-	FormLabel,
-	InputLabel,
-	MenuItem,
-	Radio,
-	RadioGroup,
-	Select,
-	SelectChangeEvent,
-	TextField,
-} from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, TextField } from '@mui/material';
 import { CostSymbols, TaxOptions } from '../../types/enums';
 import { useAppDispatch, useAppSelector } from '../../libs/hooks';
 import { ChangeEvent } from 'react';
@@ -35,12 +24,17 @@ const TaxForReceipt = () => {
 
 	const handleTipSymbol = (event: SelectChangeEvent<CostSymbols>) => {
 		const value: CostSymbols = event.target.value as CostSymbols;
-		dispatch(CheckActions.setTaxSymbol(value));
+		dispatch(CheckActions.setTipSymbol(value));
 	};
 
 	const handleTaxSymbol = (event: SelectChangeEvent<CostSymbols>) => {
 		const value: CostSymbols = event.target.value as CostSymbols;
 		dispatch(CheckActions.setTaxSymbol(value));
+	};
+
+	const handleTaxOptions = (event: ChangeEvent<HTMLInputElement>) => {
+		const value: TaxOptions = event.target.value as TaxOptions;
+		dispatch(CheckActions.setTaxOptions(value));
 	};
 
 	return (
@@ -65,7 +59,7 @@ const TaxForReceipt = () => {
 			<section>
 				<FormControl>
 					<FormLabel>Gender</FormLabel>
-					<RadioGroup row name='row-radio-buttons-group' value={taxOptions}>
+					<RadioGroup row name='row-radio-buttons-group' value={taxOptions} onChange={handleTaxOptions}>
 						<FormControlLabel value={TaxOptions.PreTax} control={<Radio />} label='Tip on Pre-Tax' />
 						<FormControlLabel value={TaxOptions.PostTax} control={<Radio />} label='Tip on Post-Tax' />
 					</RadioGroup>

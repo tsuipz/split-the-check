@@ -5,6 +5,7 @@ import { CheckActions } from '../../libs/store';
 import TaxForReceipt from '../../components/TaxOptions/TaxForReceipt';
 import { useNavigate } from 'react-router-dom';
 import SubTotal from '../../components/SubTotal/SubTotal';
+import PreviousButton from '../../shared/PreviousButton/PreviousButton';
 
 const Split = () => {
 	const splitAmount = useAppSelector((state) => state.checks.splitAmount);
@@ -12,7 +13,6 @@ const Split = () => {
 	const navigation = useNavigate();
 	const [errorSplitAmount, setErrorSplitAmount] = useState(false);
 	const [errorSplitText, setErrorSplitText] = useState('');
-
 	const handleSplitSelect = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		const value = +event.target.value ?? 0;
 		dispatch(CheckActions.setSplitAmount(value));
@@ -27,7 +27,7 @@ const Split = () => {
 
 	const handleFormCheck = () => {
 		if (!errorSplitAmount) {
-			navigation('/split-the-check/receipt');
+			navigation('/receipt');
 		}
 	};
 
@@ -49,9 +49,7 @@ const Split = () => {
 
 				<TaxForReceipt />
 
-				<Button variant='contained' onClick={() => navigation(-1)}>
-					Previous
-				</Button>
+				<PreviousButton />
 				<Button variant='contained' onClick={handleFormCheck}>
 					Next
 				</Button>

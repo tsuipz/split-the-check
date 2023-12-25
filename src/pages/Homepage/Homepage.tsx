@@ -1,16 +1,21 @@
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../libs/hooks';
 import { SplitChoices } from '../../types/enums';
 import { CheckActions } from '../../libs/store';
+import { useNavigate } from 'react-router-dom';
 
 const Homepage = () => {
 	const choice = useAppSelector((state) => state.checks.choice);
 	const dispatch = useAppDispatch();
+	const navigation = useNavigate();
 
 	const handleChoice = (event: SelectChangeEvent<SplitChoices>) => {
 		const value: SplitChoices = event.target.value as SplitChoices;
 		dispatch(CheckActions.setChoice(value));
+	};
+
+	const handleChoiceRoute = () => {
+		navigation(choice);
 	};
 
 	return (
@@ -25,7 +30,7 @@ const Homepage = () => {
 					<MenuItem value={SplitChoices.SplitWithPersons}>Split With Persons</MenuItem>
 				</Select>
 			</FormControl>
-			<Button variant='contained' href={`/split-the-check/${choice}`}>
+			<Button variant='contained' onClick={handleChoiceRoute}>
 				Next
 			</Button>
 		</main>
