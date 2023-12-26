@@ -58,8 +58,28 @@ const SplitWithPerson = () => {
 		const currentPersonsCostStack = [...personsCostStack];
 		currentPersonsCostStack.push(personCostStack);
 		setPersonsCostStack(currentPersonsCostStack);
-		setRedoStack([]);
+		setUndoStack([]);
 		setCost(0);
+	};
+
+	const handleUndo = () => {
+		const currentPersonsCostStack = [...personsCostStack];
+		const currentUndoStack = [...undoStack];
+		const item: PersonsCostStack = currentPersonsCostStack.pop() as PersonsCostStack;
+		currentUndoStack.push(item);
+
+		setPersonsCostStack(currentPersonsCostStack);
+		setUndoStack(currentUndoStack);
+	};
+
+	const handleRedo = () => {
+		const currentPersonsCostStack = [...personsCostStack];
+		const currentUndoStack = [...undoStack];
+		const item: PersonsCostStack = currentUndoStack.pop() as PersonsCostStack;
+		currentPersonsCostStack.push(item);
+
+		setPersonsCostStack(currentPersonsCostStack);
+		setUndoStack(currentUndoStack);
 	};
 
 	const handleFormSubmit = () => {
@@ -143,6 +163,15 @@ const SplitWithPerson = () => {
 						</p>
 					))}
 				</section>
+
+				<div>
+					<Button variant='contained' disabled={personsCostStack.length === 0} onClick={handleUndo}>
+						Undo
+					</Button>
+					<Button variant='contained' disabled={undoStack.length === 0} onClick={handleRedo}>
+						Redo
+					</Button>
+				</div>
 
 				<div>
 					<PreviousButton />
