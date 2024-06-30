@@ -3,11 +3,11 @@ const path = require('path');
 
 const environmentFilePath = path.join(
   __dirname,
-  'src/environments/environment.ts',
+  '../../src/environments/environment.prod.ts',
 );
 const environmentTemplateFilePath = path.join(
   __dirname,
-  'src/environments/environment.ts',
+  '../../src/environments/environment.template.ts',
 );
 
 fs.readFile(environmentTemplateFilePath, 'utf8', (err, data) => {
