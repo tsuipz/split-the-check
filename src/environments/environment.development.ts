@@ -1,16 +1,12 @@
-import { config } from 'dotenv';
-
-config();
-
 export const environment = {
-  production: false,
+  production: false, // or false depending on the environment
   firebase: {
-    apiKey: process.env['FIREBASE_API_KEY'],
-    authDomain: process.env['FIREBASE_AUTH_DOMAIN'],
-    projectId: process.env['FIREBASE_PROJECT_ID'],
-    storageBucket: process.env['FIREBASE_STORAGE_BUCKET'],
-    messagingSenderId: process.env['FIREBASE_MESSAGING_SENDER_ID'],
-    appId: process.env['FIREBASE_APP_ID'],
-    measurementId: process.env['FIREBASE_MEASUREMENT_ID'],
+    apiKey: 'AIzaSyDaJSREP6wHzFdbUJC28GGxxCZmq3aPXSg',
+    authDomain: 'split-the-check-bdff0.firebaseapp.com',
+    projectId: 'split-the-check-bdff0',
+    storageBucket: 'split-the-check-bdff0.appspot.com',
+    messagingSenderId: '684652329901',
+    appId: '1:684652329901:web:adb8b8b459af6149e13f24',
+    measurementId: 'G-0EBVPX36EZ',
   },
 };
