@@ -14,8 +14,10 @@ export class AuthService {
     try {
       // const credential = await this.afAuth.signInWithPopup(provider);
       const credential = await signInWithPopup(this.afAuth, provider);
+      // eslint-disable-next-line no-console
       console.log('Google sign in successful', credential);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error during Google sign in', error);
     }
   }
@@ -23,8 +25,10 @@ export class AuthService {
   async signOut() {
     try {
       await this.afAuth.signOut();
+      // eslint-disable-next-line no-console
       console.log('Sign out successful');
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error during sign out', error);
     }
   }
