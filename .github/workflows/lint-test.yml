@@ -25,7 +25,7 @@ jobs:
         run: npm ci
 
       - name: Lint Codebase
-        run: npm run lint
+        run: npm run lint:ci
 
       - name: Run Tests
-        run: npm run test
+        run: npm run test:ci
