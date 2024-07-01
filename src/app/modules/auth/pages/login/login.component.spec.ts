@@ -6,9 +6,11 @@ import { AuthService } from '@core/services/auth.service';
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let authServiceMock: any;
+  let authServiceMock: jasmine.SpyObj<AuthService>;
 
   beforeEach(async () => {
+    authServiceMock = jasmine.createSpyObj('AuthService', ['onGoogleSignIn']);
+
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [{ provide: AuthService, useValue: authServiceMock }],
@@ -20,12 +22,25 @@ describe('LoginComponent', () => {
   });
 
   it('should create', () => {
+    // Assert
     expect(component).toBeTruthy();
   });
 
   it('should render the login form', async () => {
-    const button = screen.getByRole('button');
+    // Arrange
+    const button = screen.getByRole('button', { name: 'Sign in with Google' });
 
+    // Assert
     expect(button).toBeTruthy();
+  });
+
+  describe('signInWithGoogle', () => {
+    it('should call onGoogleSignIn method from AuthService', () => {
+      // Act
+      component.signInWithGoogle();
+
+      // Assert
+      expect(authServiceMock.onGoogleSignIn).toHaveBeenCalled();
+    });
   });
 });

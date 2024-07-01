@@ -15,7 +15,7 @@ export class HomeComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   public logout() {
-    this.authService.signOut();
+    this.authService.onSignOut();
   }
 
   public navigateToAbout() {
