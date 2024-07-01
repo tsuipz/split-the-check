@@ -14,7 +14,10 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   constructor(public authService: AuthService) {}
 
-  signInWithGoogle() {
-    this.authService.googleSignIn();
+  /**
+   * Sign in with Google
+   */
+  public signInWithGoogle(): void {
+    this.authService.onGoogleSignIn();
   }
 }
