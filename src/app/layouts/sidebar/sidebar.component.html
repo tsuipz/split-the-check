@@ -1,0 +1,21 @@
+<mat-list class="h-full">
+  <main class="h-full flex flex-col justify-between">
+    <section id="routes__top">
+      @for (route of routeLinks; track route) {
+      <mat-list-item class="hover:bg-blue-200" (click)="route.onclick()">
+        <mat-icon matListItemIcon [fontIcon]="route.icon"></mat-icon>
+        <div matListItemTitle>{{ route.name }}</div>
+      </mat-list-item>
+      }
+    </section>
+
+    <section id="routes__bottom">
+      @for (route of bottomRouteLinks; track route) {
+      <mat-list-item class="hover:bg-blue-200" (click)="route.onclick()">
+        <mat-icon matListItemIcon [fontIcon]="route.icon"></mat-icon>
+        <div matListItemTitle>{{ route.name }}</div>
+      </mat-list-item>
+      }
+    </section>
+  </main>
+</mat-list>

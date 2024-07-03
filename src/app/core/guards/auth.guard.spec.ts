@@ -11,13 +11,13 @@ describe('authGuard', () => {
   let routerMock: jasmine.SpyObj<Router>;
 
   beforeEach(() => {
-    const authSpy = jasmine.createSpyObj('AuthService', ['onIsLoggedIn']);
-    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    authServiceMock = jasmine.createSpyObj('AuthService', ['onIsLoggedIn']);
+    routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: AuthService, useValue: authSpy },
-        { provide: Router, useValue: routerSpy },
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: Router, useValue: routerMock },
       ],
     });
 

@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '@app/core/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -9,16 +7,4 @@ import { AuthService } from '@app/core/services/auth.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
-  title = 'split-the-check';
-
-  constructor(private authService: AuthService, private router: Router) {}
-
-  public logout() {
-    this.authService.onSignOut();
-  }
-
-  public navigateToAbout() {
-    this.router.navigate(['home', 'about']);
-  }
-}
+export class HomeComponent {}
