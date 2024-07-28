@@ -30,6 +30,7 @@
     "@ngrx/eslint-plugin": "^18.0.1",
     "@ngrx/operators": "^18.0.1",
     "@ngrx/router-store": "^18.0.1",
+    "@ngrx/signals": "^18.0.0",
     "@ngrx/store": "^18.0.1",
     "@ngrx/store-devtools": "^18.0.1",
     "dotenv": "^16.4.5",
