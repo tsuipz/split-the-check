@@ -27,7 +27,7 @@
     "@ngrx/component": "^18.0.1",
     "@ngrx/effects": "^18.0.1",
     "@ngrx/entity": "^18.0.1",
-    "@ngrx/eslint-plugin": "^17.2.0",
+    "@ngrx/eslint-plugin": "^18.0.1",
     "@ngrx/operators": "^18.0.1",
     "@ngrx/router-store": "^18.0.1",
     "@ngrx/store": "^18.0.1",
