@@ -120,6 +120,7 @@
     "analytics": "3d11fd58-a858-4b6a-8258-4b76876fad77",
     "schematicCollections": [
       "@angular-eslint/schematics",
+      "@ngrx/schematics",
       "@ngrx/schematics"
     ]
   }
