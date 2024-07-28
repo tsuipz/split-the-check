@@ -82,6 +82,28 @@ describe('SidebarComponent', () => {
       expect(routerMock.navigate).toHaveBeenCalledWith(['home']);
     });
 
+    it('should call the onNavigateToFriends method when the Friends link is clicked', () => {
+      // Arrange
+      const friendsEl = screen.getByText('Friends');
+
+      // Act
+      fireEvent.click(friendsEl);
+
+      // Assert
+      expect(routerMock.navigate).toHaveBeenCalledWith(['friends']);
+    });
+
+    it('should call the onNavigateToGroups method when the Groups link is clicked', () => {
+      // Arrange
+      const groupsEl = screen.getByText('Groups');
+
+      // Act
+      fireEvent.click(groupsEl);
+
+      // Assert
+      expect(routerMock.navigate).toHaveBeenCalledWith(['groups']);
+    });
+
     it('should call the logout method when the Logout link is clicked', () => {
       // Arrange
       const logoutEl = screen.getByText('Logout');
@@ -101,26 +123,6 @@ describe('SidebarComponent', () => {
 
       // Assert
       expect(authServiceMock.onSignOut).toHaveBeenCalled();
-    });
-  });
-
-  describe('onNavigateToHome', () => {
-    it('should navigate to the home page', () => {
-      // Act
-      component.onNavigateToHome();
-
-      // Assert
-      expect(routerMock.navigate).toHaveBeenCalledWith(['home']);
-    });
-  });
-
-  describe('onNavigateToAbout', () => {
-    it('should navigate to the about page', () => {
-      // Act
-      component.onNavigateToAbout();
-
-      // Assert
-      expect(routerMock.navigate).toHaveBeenCalledWith(['home', 'about']);
     });
   });
 });

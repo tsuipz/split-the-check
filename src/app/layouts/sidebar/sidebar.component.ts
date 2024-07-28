@@ -32,13 +32,13 @@ export class SidebarComponent {
       link: 'friends',
       name: 'Friends',
       icon: 'handshake',
-      onclick: this.onNavigateToHome.bind(this),
+      onclick: this.onNavigateToFriends.bind(this),
     },
     {
       link: 'groups',
       name: 'Groups',
       icon: 'groups_2',
-      onclick: this.onNavigateToAbout.bind(this),
+      onclick: this.onNavigateToGroups.bind(this),
     },
     {
       link: 'activity',
@@ -76,14 +76,28 @@ export class SidebarComponent {
   /**
    * Navigate to the home page
    */
-  public onNavigateToHome(): void {
+  private onNavigateToHome(): void {
     this.router.navigate(['home']);
+  }
+
+  /**
+   * Navigate to the friends page
+   */
+  private onNavigateToFriends(): void {
+    this.router.navigate(['friends']);
   }
 
   /**
    * Navigate to the about page
    */
-  public onNavigateToAbout(): void {
+  private onNavigateToGroups(): void {
+    this.router.navigate(['groups']);
+  }
+
+  /**
+   * Navigate to the about page
+   */
+  private onNavigateToAbout(): void {
     this.router.navigate(['home', 'about']);
   }
 }

@@ -5,12 +5,12 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/home/home.component').then((m) => m.HomeComponent),
+      import('./pages/groups/groups.component').then((m) => m.GroupsComponent),
   },
   {
-    path: 'about',
+    path: ':id',
     loadComponent: () =>
-      import('./pages/about/about.component').then((m) => m.AboutComponent),
+      import('./pages/group/group.component').then((m) => m.GroupComponent),
   },
 ];
 
@@ -18,4 +18,4 @@ export const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HomeRoutingModule {}
+export class GroupsRoutingModule {}
