@@ -1,0 +1,26 @@
+<mat-list role="list">
+  <mat-slide-toggle
+    [ngModel]="isChecked$()"
+    (ngModelChange)="onToggleChange($event)"
+    >Slide me!</mat-slide-toggle
+  >
+  @for (person of personDebts$(); track $index) {
+
+  <mat-list-item role="listitem">
+    <article matListItemTitle>
+      <span
+        >{{ users[person.personId].name }}:
+        {{ onCalculateTotalPersonDebts(person) | currency : 'USD' }}</span
+      >
+    </article>
+    @for (debt of person.debts; track $index) {
+
+    <p matListItemLine>
+      {{ onDebtDescription(debt).owesText }}
+      {{ onDebtDescription(debt).amount | currency : 'USD' }}
+      {{ onDebtDescription(debt).toText }} {{ users[debt.personId].name }}
+    </p>
+    }
+  </mat-list-item>
+  }
+</mat-list>

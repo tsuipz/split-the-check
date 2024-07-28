@@ -5,12 +5,14 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/home/home.component').then((m) => m.HomeComponent),
+      import('./pages/friends/friends.component').then(
+        (m) => m.FriendsComponent,
+      ),
   },
   {
-    path: 'about',
+    path: ':id',
     loadComponent: () =>
-      import('./pages/about/about.component').then((m) => m.AboutComponent),
+      import('./pages/friend/friend.component').then((m) => m.FriendComponent),
   },
 ];
 
@@ -18,4 +20,4 @@ export const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class HomeRoutingModule {}
+export class FriendsRoutingModule {}

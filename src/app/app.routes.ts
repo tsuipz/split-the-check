@@ -19,6 +19,18 @@ export const routes: Routes = [
         loadChildren: () =>
           import('@modules/home/home.module').then((m) => m.HomeModule),
       },
+      {
+        path: 'friends',
+        loadChildren: () =>
+          import('@modules/friends/friends.module').then(
+            (m) => m.FriendsModule,
+          ),
+      },
+      {
+        path: 'groups',
+        loadChildren: () =>
+          import('@modules/groups/groups.module').then((m) => m.GroupsModule),
+      },
     ],
   },
   {
