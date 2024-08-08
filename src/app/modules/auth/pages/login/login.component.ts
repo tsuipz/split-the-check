@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { AuthService } from '@core/services/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { AuthActions } from '@app/core/stores/auth';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-login',
@@ -12,12 +13,12 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  constructor(public authService: AuthService) {}
+  constructor(private store: Store) {}
 
   /**
    * Sign in with Google
    */
   public signInWithGoogle(): void {
-    this.authService.onGoogleSignIn();
+    this.store.dispatch(AuthActions.login());
   }
 }

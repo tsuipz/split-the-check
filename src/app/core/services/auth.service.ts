@@ -70,7 +70,9 @@ export class AuthService {
     // Wait for the auth state to be ready
     await this.afAuth.authStateReady();
 
+    const user = this.afAuth.currentUser;
+
     // Check if the user exists or not
-    return !!this.afAuth.currentUser;
+    return !!user;
   }
 }
