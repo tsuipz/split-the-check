@@ -4,7 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '@app/core/services/auth.service';
+import { Store } from '@ngrx/store';
+import { AuthActions } from '@app/core/stores/auth';
 
 @Component({
   selector: 'app-sidebar',
@@ -64,13 +65,13 @@ export class SidebarComponent {
     },
   ];
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private router: Router, private store: Store) {}
 
   /**
    * Logout the user
    */
-  public async onLogout(): Promise<void> {
-    await this.authService.onSignOut();
+  public onLogout(): void {
+    this.store.dispatch(AuthActions.logout());
   }
 
   /**

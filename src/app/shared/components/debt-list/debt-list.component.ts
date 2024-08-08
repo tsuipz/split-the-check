@@ -4,11 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DebtListService } from './debt-list.service';
-
-interface User {
-  id: string;
-  name: string;
-}
+import { User } from '@app/core/models/interfaces';
 
 interface Group {
   id: number;
@@ -50,9 +46,21 @@ const RECIPTS_DATA: Receipt[] = [
 ];
 
 const USERS_DATA: Record<string, User> = {
-  '1': { id: '1', name: 'John Smith' },
-  '2': { id: '2', name: 'Jane Smith' },
-  '3': { id: '3', name: 'John Doe' },
+  '1': {
+    id: '1',
+    name: 'John Smith',
+    email: '',
+    groupIds: [],
+    settledDebts: {},
+  },
+  '2': {
+    id: '2',
+    name: 'Jane Smith',
+    email: '',
+    groupIds: [],
+    settledDebts: {},
+  },
+  '3': { id: '3', name: 'John Doe', email: '', groupIds: [], settledDebts: {} },
 };
 
 const MAT_MODULES = [MatSlideToggleModule, MatListModule];

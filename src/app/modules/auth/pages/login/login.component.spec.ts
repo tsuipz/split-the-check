@@ -1,23 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { screen } from '@testing-library/angular';
 import { LoginComponent } from './login.component';
-import { AuthService } from '@core/services/auth.service';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { AuthActions } from '@app/core/stores/auth';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
-  let authServiceMock: jasmine.SpyObj<AuthService>;
+  let storeMock: MockStore;
 
   beforeEach(async () => {
-    authServiceMock = jasmine.createSpyObj('AuthService', ['onGoogleSignIn']);
-
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
-      providers: [{ provide: AuthService, useValue: authServiceMock }],
+      providers: [provideMockStore()],
     }).compileComponents();
+  });
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
+    storeMock = TestBed.inject(MockStore);
     fixture.detectChanges();
   });
 
@@ -36,11 +38,13 @@ describe('LoginComponent', () => {
 
   describe('signInWithGoogle', () => {
     it('should call onGoogleSignIn method from AuthService', () => {
+      // Arrange
+      const dispatchSpy = spyOn(storeMock, 'dispatch');
       // Act
       component.signInWithGoogle();
 
       // Assert
-      expect(authServiceMock.onGoogleSignIn).toHaveBeenCalled();
+      expect(dispatchSpy).toHaveBeenCalledWith(AuthActions.login());
     });
   });
 });

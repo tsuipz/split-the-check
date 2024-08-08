@@ -3,25 +3,24 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SidebarComponent } from './sidebar.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { AuthService } from '@app/core/services/auth.service';
 import { Router } from '@angular/router';
 import { fireEvent, screen } from '@testing-library/angular';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let el: DebugElement;
-  let authServiceMock: jasmine.SpyObj<AuthService>;
+  let storeMock: MockStore;
   let routerMock: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    authServiceMock = jasmine.createSpyObj('AuthService', ['onSignOut']);
     routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
       imports: [SidebarComponent],
       providers: [
-        { provide: AuthService, useValue: authServiceMock },
+        provideMockStore(),
         { provide: Router, useValue: routerMock },
       ],
     }).compileComponents();
@@ -31,6 +30,7 @@ describe('SidebarComponent', () => {
     fixture = TestBed.createComponent(SidebarComponent);
     component = fixture.componentInstance;
     el = fixture.debugElement;
+    storeMock = TestBed.inject(MockStore);
     fixture.detectChanges();
   });
 
@@ -106,23 +106,26 @@ describe('SidebarComponent', () => {
 
     it('should call the logout method when the Logout link is clicked', () => {
       // Arrange
+      const dispatchSpy = spyOn(storeMock, 'dispatch');
       const logoutEl = screen.getByText('Logout');
 
       // Act
       fireEvent.click(logoutEl);
 
       // Assert
-      expect(authServiceMock.onSignOut).toHaveBeenCalled();
+      expect(dispatchSpy).toHaveBeenCalled();
     });
   });
 
   describe('onLogout', () => {
-    it('should call the onSignOut method', async () => {
+    it('should call the onSignOut method', () => {
+      // Arrange
+      const dispatchSpy = spyOn(storeMock, 'dispatch');
       // Act
-      await component.onLogout();
+      component.onLogout();
 
       // Assert
-      expect(authServiceMock.onSignOut).toHaveBeenCalled();
+      expect(dispatchSpy).toHaveBeenCalled();
     });
   });
 });

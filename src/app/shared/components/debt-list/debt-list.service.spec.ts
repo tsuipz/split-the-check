@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DebtListService } from './debt-list.service';
+import { User } from '@app/core/models/interfaces';
 
 describe('DebtListService', () => {
   let service: DebtListService;
@@ -33,10 +34,28 @@ describe('DebtListService', () => {
         { id: 3, amount: 0.0, payerId: '2', payeeId: '1', groupId: 1 },
         { id: 4, amount: 20.0, payerId: '3', payeeId: '2', groupId: 1 },
       ];
-      const users = {
-        '1': { id: '1', name: 'John Smith' },
-        '2': { id: '2', name: 'Jane Smith' },
-        '3': { id: '3', name: 'John Doe' },
+      const users: Record<string, User> = {
+        '1': {
+          id: '1',
+          name: 'John Smith',
+          email: '',
+          groupIds: [],
+          settledDebts: {},
+        },
+        '2': {
+          id: '2',
+          name: 'Jane Smith',
+          email: '',
+          groupIds: [],
+          settledDebts: {},
+        },
+        '3': {
+          id: '3',
+          name: 'John Doe',
+          email: '',
+          groupIds: [],
+          settledDebts: {},
+        },
       };
       const isChecked = false;
       const expected = [
@@ -93,9 +112,27 @@ describe('DebtListService', () => {
         { id: 4, amount: 20.0, payerId: '3', payeeId: '2', groupId: 1 },
       ];
       const users = {
-        '1': { id: '1', name: 'John Smith' },
-        '2': { id: '2', name: 'Jane Smith' },
-        '3': { id: '3', name: 'John Doe' },
+        '1': {
+          id: '1',
+          name: 'John Smith',
+          email: '',
+          groupIds: [],
+          settledDebts: {},
+        },
+        '2': {
+          id: '2',
+          name: 'Jane Smith',
+          email: '',
+          groupIds: [],
+          settledDebts: {},
+        },
+        '3': {
+          id: '3',
+          name: 'John Doe',
+          email: '',
+          groupIds: [],
+          settledDebts: {},
+        },
       };
       const isChecked = true;
       const expected = [
