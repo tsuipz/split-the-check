@@ -1,16 +1,22 @@
-import { TestBed } from '@angular/core/testing';
+import { render, screen } from '@testing-library/angular';
 import { AppComponent } from './app.component';
+import { RouterOutlet } from '@angular/router';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AppComponent],
-    }).compileComponents();
+  it('should create the app', async () => {
+    await render(AppComponent, {
+      imports: [RouterOutlet],
+    });
+
+    const app = screen.getByRole('main');
+    expect(app).toBeInTheDocument();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+  it('should have router outlet', async () => {
+    const { container } = await render(AppComponent, {
+      imports: [RouterOutlet],
+    });
+
+    expect(container.querySelector('router-outlet')).toBeInTheDocument();
   });
 });

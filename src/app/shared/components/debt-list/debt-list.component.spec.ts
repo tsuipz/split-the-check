@@ -5,13 +5,13 @@ import { DebtListService } from './debt-list.service';
 describe('DebtListComponent', () => {
   let component: DebtListComponent;
   let fixture: ComponentFixture<DebtListComponent>;
-  let debtListServiceMock: jasmine.SpyObj<DebtListService>;
+  let debtListServiceMock: jest.Mocked<DebtListService>;
 
   beforeEach(async () => {
     // mock services
-    debtListServiceMock = jasmine.createSpyObj('DebtListService', [
-      'calculateGroupDebts',
-    ]);
+    debtListServiceMock = {
+      calculateGroupDebts: jest.fn(),
+    } as unknown as jest.Mocked<DebtListService>;
 
     await TestBed.configureTestingModule({
       imports: [DebtListComponent],
@@ -69,9 +69,9 @@ describe('DebtListComponent', () => {
           ],
         },
       ];
-      spyOn(component.isChecked$, 'set');
-      spyOn(component.personDebts$, 'set');
-      debtListServiceMock.calculateGroupDebts.and.returnValue(personDebts);
+      jest.spyOn(component.isChecked$, 'set');
+      jest.spyOn(component.personDebts$, 'set');
+      debtListServiceMock.calculateGroupDebts.mockReturnValue(personDebts);
 
       // Act
       component.onToggleChange(value);
@@ -122,9 +122,9 @@ describe('DebtListComponent', () => {
           ],
         },
       ];
-      spyOn(component.isChecked$, 'set');
-      spyOn(component.personDebts$, 'set');
-      debtListServiceMock.calculateGroupDebts.and.returnValue(personDebts);
+      jest.spyOn(component.isChecked$, 'set');
+      jest.spyOn(component.personDebts$, 'set');
+      debtListServiceMock.calculateGroupDebts.mockReturnValue(personDebts);
 
       // Act
       component.onToggleChange(value);

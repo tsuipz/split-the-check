@@ -6,39 +6,29 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let afAuthMock: jasmine.SpyObj<Auth>;
-  let routerMock: jasmine.SpyObj<Router>;
+  let afAuthMock: jest.Mocked<Auth>;
+  let routerMock: jest.Mocked<Router>;
+  let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    afAuthMock = jasmine.createSpyObj(
-      'Auth',
-      [
-        'signInWithPopup',
-        'signOut',
-        'authStateReady',
-        'currentUser',
-        'setPersistence',
-      ],
-      {
-        authStateReady: jasmine.createSpy().and.resolveTo(),
-        currentUser: {
-          uid: '123',
-        },
-        setPersistence: jasmine.createSpy().and.resolveTo(),
+    afAuthMock = {
+      signInWithPopup: jest.fn(),
+      signOut: jest.fn(),
+      authStateReady: jest.fn().mockResolvedValue(undefined),
+      currentUser: {
+        uid: '123',
       },
-    );
+      setPersistence: jest.fn().mockResolvedValue(undefined),
+    } as unknown as jest.Mocked<Auth>;
 
-    routerMock = jasmine.createSpyObj('Router', ['navigate'], {
-      navigate: jasmine.createSpy().and.callThrough(),
-    });
+    routerMock = {
+      navigate: jest.fn(),
+    } as unknown as jest.Mocked<Router>;
 
     TestBed.configureTestingModule({
       providers: [
         { provide: Auth, useValue: afAuthMock },
-        {
-          provide: Router,
-          useValue: routerMock,
-        },
+        { provide: Router, useValue: routerMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
@@ -46,15 +36,23 @@ describe('AuthService', () => {
     service = TestBed.inject(AuthService);
   });
 
+  afterEach(() => {
+    if (consoleErrorSpy) {
+      consoleErrorSpy.mockRestore();
+    }
+  });
+
   it('should be created', () => {
-    // Assert
     expect(service).toBeTruthy();
   });
 
   describe('onGoogleSignIn', () => {
     it('should sign in with Google and navigate to home page', async () => {
       // Arrange
-      spyOn(service, 'onProviderSignIn').and.resolveTo({} as UserCredential);
+      jest
+        .spyOn(service, 'onProviderSignIn')
+        .mockResolvedValue({} as UserCredential);
+
       // Act
       await service.onGoogleSignIn();
 
@@ -75,7 +73,8 @@ describe('AuthService', () => {
 
     it('should log an error if sign out fails', async () => {
       // Arrange
-      afAuthMock.signOut.and.rejectWith('Error');
+      consoleErrorSpy = jest.spyOn(console, 'error').mockReturnValue();
+      afAuthMock.signOut.mockRejectedValue('Error');
 
       // Act
       await service.onSignOut();
@@ -83,6 +82,7 @@ describe('AuthService', () => {
       // Assert
       expect(afAuthMock.signOut).toHaveBeenCalled();
       expect(routerMock.navigate).not.toHaveBeenCalled();
+      expect(consoleErrorSpy).toHaveBeenCalled();
     });
   });
 
@@ -92,7 +92,7 @@ describe('AuthService', () => {
       const result = await service.onIsLoggedIn();
 
       // Assert
-      expect(result).toBeTrue();
+      expect(result).toBe(true);
     });
   });
 });
