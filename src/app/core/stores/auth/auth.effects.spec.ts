@@ -6,24 +6,26 @@ import { UserService } from '@app/core/services/user.service';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import * as AuthActions from './auth.actions';
-import { cold, hot } from 'jasmine-marbles';
+import { cold, hot } from 'jest-marbles';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '@app/core/models/interfaces';
 
 describe('AuthEffects', () => {
   let actions$: Actions;
-  let authServiceMock: jasmine.SpyObj<AuthService>;
-  let userServiceMock: jasmine.SpyObj<UserService>;
+  let authServiceMock: jest.Mocked<AuthService>;
+  let userServiceMock: jest.Mocked<UserService>;
   let effects: AuthEffects;
 
   beforeEach(() => {
     // mock services
-    authServiceMock = jasmine.createSpyObj('AuthService', [
-      'onGoogleSignIn',
-      'onSignOut',
-    ]);
+    authServiceMock = {
+      onGoogleSignIn: jest.fn(),
+      onSignOut: jest.fn(),
+    } as unknown as jest.Mocked<AuthService>;
 
-    userServiceMock = jasmine.createSpyObj('UserService', ['getUserProfile']);
+    userServiceMock = {
+      getUserProfile: jest.fn(),
+    } as unknown as jest.Mocked<UserService>;
 
     TestBed.configureTestingModule({
       providers: [
@@ -62,7 +64,7 @@ describe('AuthEffects', () => {
       actions$ = hot('-a--', { a: action });
       const response = cold('--a|', { a: undefined });
       const expected = cold('---b', { b: success });
-      authServiceMock.onGoogleSignIn.and.returnValue(response as any);
+      authServiceMock.onGoogleSignIn.mockReturnValue(response as any);
 
       // Assert
       expect(effects.login$).toBeObservable(expected);
@@ -80,7 +82,7 @@ describe('AuthEffects', () => {
       actions$ = hot('-a--', { a: action });
       const response = cold('--#|', {}, error);
       const expected = cold('---b', { b: failure });
-      authServiceMock.onGoogleSignIn.and.returnValue(response as any);
+      authServiceMock.onGoogleSignIn.mockReturnValue(response as any);
 
       // Assert
       expect(effects.login$).toBeObservable(expected);
@@ -102,7 +104,7 @@ describe('AuthEffects', () => {
       actions$ = hot('-a--', { a: action });
       const response = cold('--a|', { a: undefined });
       const expected = cold('---b', { b: success });
-      authServiceMock.onSignOut.and.returnValue(response as any);
+      authServiceMock.onSignOut.mockReturnValue(response as any);
 
       // Assert
       expect(effects.logout$).toBeObservable(expected);
@@ -120,7 +122,7 @@ describe('AuthEffects', () => {
       actions$ = hot('-a--', { a: action });
       const response = cold('--#|', {}, error);
       const expected = cold('---b', { b: failure });
-      authServiceMock.onSignOut.and.returnValue(response as any);
+      authServiceMock.onSignOut.mockReturnValue(response as any);
 
       // Assert
       expect(effects.logout$).toBeObservable(expected);
@@ -146,11 +148,10 @@ describe('AuthEffects', () => {
       const success = AuthActions.getUserProfileSuccess({ user });
 
       // Act
-
       actions$ = hot('-a--', { a: action });
       const response = cold('--a|', { a: user });
       const expected = cold('---b', { b: success });
-      userServiceMock.getUserProfile.and.returnValue(response as any);
+      userServiceMock.getUserProfile.mockReturnValue(response as any);
 
       // Assert
       expect(effects.getUserProfile$).toBeObservable(expected);
@@ -168,7 +169,7 @@ describe('AuthEffects', () => {
       actions$ = hot('-a--', { a: action });
       const response = cold('--#|', {}, error);
       const expected = cold('---b', { b: failure });
-      userServiceMock.getUserProfile.and.returnValue(response as any);
+      userServiceMock.getUserProfile.mockReturnValue(response as any);
 
       // Assert
       expect(effects.getUserProfile$).toBeObservable(expected);

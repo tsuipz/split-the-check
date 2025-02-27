@@ -39,7 +39,8 @@ describe('LoginComponent', () => {
   describe('signInWithGoogle', () => {
     it('should call onGoogleSignIn method from AuthService', () => {
       // Arrange
-      const dispatchSpy = spyOn(storeMock, 'dispatch');
+      const dispatchSpy = jest.spyOn(storeMock, 'dispatch');
+
       // Act
       component.signInWithGoogle();
 

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SidebarComponent } from './sidebar.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -12,10 +11,12 @@ describe('SidebarComponent', () => {
   let fixture: ComponentFixture<SidebarComponent>;
   let el: DebugElement;
   let storeMock: MockStore;
-  let routerMock: jasmine.SpyObj<Router>;
+  let routerMock: jest.Mocked<Router>;
 
   beforeEach(async () => {
-    routerMock = jasmine.createSpyObj('Router', ['navigate']);
+    routerMock = {
+      navigate: jest.fn(),
+    } as unknown as jest.Mocked<Router>;
 
     await TestBed.configureTestingModule({
       imports: [SidebarComponent],
@@ -106,7 +107,7 @@ describe('SidebarComponent', () => {
 
     it('should call the logout method when the Logout link is clicked', () => {
       // Arrange
-      const dispatchSpy = spyOn(storeMock, 'dispatch');
+      const dispatchSpy = jest.spyOn(storeMock, 'dispatch');
       const logoutEl = screen.getByText('Logout');
 
       // Act
@@ -120,7 +121,7 @@ describe('SidebarComponent', () => {
   describe('onLogout', () => {
     it('should call the onSignOut method', () => {
       // Arrange
-      const dispatchSpy = spyOn(storeMock, 'dispatch');
+      const dispatchSpy = jest.spyOn(storeMock, 'dispatch');
       // Act
       component.onLogout();
 

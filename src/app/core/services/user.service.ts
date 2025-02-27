@@ -35,7 +35,7 @@ export class UserService {
     }
 
     const userDoc = doc(this.usersCollection, afUser.uid);
-    const user$: Observable<User> = docData(userDoc);
+    const user$ = docData(userDoc) as Observable<User>;
 
     return user$.pipe(
       map((user) => {
@@ -76,7 +76,7 @@ export class UserService {
    */
   public getUserProfileById(userId: string): Observable<User> {
     const userDoc = doc(this.usersCollection, userId);
-    const user$: Observable<User> = docData(userDoc);
+    const user$ = docData(userDoc) as Observable<User>;
 
     return user$;
   }

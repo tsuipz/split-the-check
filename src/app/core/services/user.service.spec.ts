@@ -4,20 +4,20 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { environment } from '@env';
+import { environment } from '../../../environments/environment';
 import { of, Subscription } from 'rxjs';
 
 describe('UserService', () => {
   let service: UserService;
-  let afAuthMock: jasmine.SpyObj<Auth>;
+  let afAuthMock: jest.Mocked<Auth>;
   let subscription: Subscription;
 
   beforeEach(() => {
-    afAuthMock = jasmine.createSpyObj('Auth', ['currentUser'], {
+    afAuthMock = {
       currentUser: {
         uid: '123',
       },
-    });
+    } as unknown as jest.Mocked<Auth>;
 
     TestBed.configureTestingModule({
       providers: [
@@ -31,9 +31,7 @@ describe('UserService', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
-  });
 
-  beforeEach(() => {
     service = TestBed.inject(UserService);
   });
 
@@ -71,14 +69,14 @@ describe('UserService', () => {
   describe('getUserProfile', () => {
     it('should return the user profile', () => {
       // Arrange
-      spyOn(service, 'createUserProfile').and.returnValue(
+      jest.spyOn(service, 'createUserProfile').mockReturnValue(
         of({
           id: '',
           name: '',
           email: '',
           groupIds: [],
           settledDebts: {},
-        } as any),
+        }),
       );
 
       // Act

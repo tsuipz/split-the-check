@@ -9,13 +9,18 @@ const helperAuthGuard = () =>
   TestBed.runInInjectionContext(() => authGuard({} as any, {} as any));
 
 describe('authGuard', () => {
-  let authServiceMock: jasmine.SpyObj<AuthService>;
-  let routerMock: jasmine.SpyObj<Router>;
+  let authServiceMock: jest.Mocked<AuthService>;
+  let routerMock: jest.Mocked<Router>;
   let storeMock: MockStore;
 
   beforeEach(() => {
-    authServiceMock = jasmine.createSpyObj('AuthService', ['onIsLoggedIn']);
-    routerMock = jasmine.createSpyObj('Router', ['navigate']);
+    authServiceMock = {
+      onIsLoggedIn: jest.fn(),
+    } as unknown as jest.Mocked<AuthService>;
+
+    routerMock = {
+      navigate: jest.fn(),
+    } as unknown as jest.Mocked<Router>;
 
     TestBed.configureTestingModule({
       providers: [
@@ -25,37 +30,33 @@ describe('authGuard', () => {
       ],
     });
 
-    authServiceMock = TestBed.inject(
-      AuthService,
-    ) as jasmine.SpyObj<AuthService>;
-    routerMock = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     storeMock = TestBed.inject(MockStore);
   });
 
   it('should allow navigation if the user is logged in', async () => {
     // Arrange
-    const dispatchSpy = spyOn(storeMock, 'dispatch');
-    authServiceMock.onIsLoggedIn.and.returnValue(Promise.resolve(true));
+    const dispatchSpy = jest.spyOn(storeMock, 'dispatch');
+    authServiceMock.onIsLoggedIn.mockResolvedValue(true);
 
     // Act
     const result = await helperAuthGuard();
 
     // Assert
-    expect(result).toBeTrue();
+    expect(result).toBe(true);
     expect(routerMock.navigate).not.toHaveBeenCalled();
     expect(dispatchSpy).toHaveBeenCalledWith(AuthActions.getUserProfile());
   });
 
   it('should redirect to login if the user is not logged in', async () => {
     // Arrange
-    const dispatchSpy = spyOn(storeMock, 'dispatch');
-    authServiceMock.onIsLoggedIn.and.returnValue(Promise.resolve(false));
+    const dispatchSpy = jest.spyOn(storeMock, 'dispatch');
+    authServiceMock.onIsLoggedIn.mockResolvedValue(false);
 
     // Act
     const result = await helperAuthGuard();
 
     // Assert
-    expect(result).toBeFalse();
+    expect(result).toBe(false);
     expect(routerMock.navigate).toHaveBeenCalledWith(['auth', 'login']);
     expect(dispatchSpy).not.toHaveBeenCalledWith(AuthActions.getUserProfile());
   });
