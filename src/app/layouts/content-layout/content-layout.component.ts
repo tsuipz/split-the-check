@@ -6,16 +6,15 @@ import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
-  standalone: true,
-  imports: [
-    FormsModule,
-    RouterOutlet,
-    MatSidenavModule,
-    MatCheckboxModule,
-    SidebarComponent,
-  ],
-  selector: 'app-content-layout',
-  templateUrl: './content-layout.component.html',
-  styleUrls: ['./content-layout.component.scss'],
+    imports: [
+        FormsModule,
+        RouterOutlet,
+        MatSidenavModule,
+        MatCheckboxModule,
+        SidebarComponent,
+    ],
+    selector: 'app-content-layout',
+    templateUrl: './content-layout.component.html',
+    styleUrls: ['./content-layout.component.scss']
 })
 export class ContentLayoutComponent {}

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 export interface FriendElement {
   id: string;
@@ -22,8 +22,7 @@ const ELEMENT_DATA: FriendElement[] = [
 
 @Component({
   selector: 'app-friends',
-  standalone: true,
-  imports: [CommonModule, MatTableModule, RouterOutlet],
+  imports: [CommonModule, MatTableModule],
   templateUrl: './friends.component.html',
   styleUrl: './friends.component.scss',
 })
