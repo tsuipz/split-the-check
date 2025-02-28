@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -25,15 +24,8 @@ const MAT_MODULES = [
 
 @Component({
   selector: 'app-groups',
-  standalone: true,
   providers: [provideNativeDateAdapter()],
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    FormsModule,
-    ...MAT_MODULES,
-    DebtListComponent,
-  ],
+  imports: [CommonModule, FormsModule, ...MAT_MODULES, DebtListComponent],
   templateUrl: './groups.component.html',
   styleUrl: './groups.component.scss',
 })

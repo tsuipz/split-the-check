@@ -6,11 +6,10 @@ import { AuthActions } from '@app/core/stores/auth';
 import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [MatButtonModule, MatIconModule, CommonModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+    selector: 'app-login',
+    imports: [MatButtonModule, MatIconModule, CommonModule],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   constructor(private store: Store) {}

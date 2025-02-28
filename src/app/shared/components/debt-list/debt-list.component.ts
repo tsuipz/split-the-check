@@ -66,12 +66,11 @@ const USERS_DATA: Record<string, User> = {
 const MAT_MODULES = [MatSlideToggleModule, MatListModule];
 
 @Component({
-  selector: 'app-debt-list',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ...MAT_MODULES],
-  providers: [DebtListService],
-  templateUrl: './debt-list.component.html',
-  styleUrl: './debt-list.component.scss',
+    selector: 'app-debt-list',
+    imports: [CommonModule, FormsModule, ...MAT_MODULES],
+    providers: [DebtListService],
+    templateUrl: './debt-list.component.html',
+    styleUrl: './debt-list.component.scss'
 })
 export class DebtListComponent implements OnInit {
   @Input() public group: Group = {

@@ -8,17 +8,16 @@ import { Store } from '@ngrx/store';
 import { AuthActions } from '@app/core/stores/auth';
 
 @Component({
-  selector: 'app-sidebar',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    MatListModule,
-    MatTooltipModule,
-    RouterModule,
-    CommonModule,
-  ],
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss',
+    selector: 'app-sidebar',
+    imports: [
+        MatIconModule,
+        MatListModule,
+        MatTooltipModule,
+        RouterModule,
+        CommonModule,
+    ],
+    templateUrl: './sidebar.component.html',
+    styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
   // Define the routeLinks array for the top
