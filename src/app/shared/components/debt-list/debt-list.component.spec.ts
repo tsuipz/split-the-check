@@ -33,10 +33,11 @@ describe('DebtListComponent', () => {
   describe('onToggleChange', () => {
     beforeEach(() => {
       component.group = {
-        id: 1,
-        groupName: 'Group 1',
+        id: '1',
+        name: 'Group 1',
         members: ['1', '2', '3'],
-        amountSpent: 1240,
+        totalSpent: 1240,
+        adminOwners: ['1'],
       };
     });
 
