@@ -9,6 +9,28 @@ module.exports = {
     '@env/(.*)': '<rootDir>/src/environments/$1',
     '@shared/(.*)': '<rootDir>/src/app/shared/$1',
   },
-  coverageReporters: ['html', 'text', 'text-summary', 'cobertura'],
   testEnvironment: 'jsdom',
+  transform: {
+    '^.+\\.(ts|js|html|svg)$': [
+      'jest-preset-angular',
+      {
+        tsconfig: '<rootDir>/tsconfig.spec.json',
+        stringifyContentPathRegex: '\\.(html|svg)$',
+      },
+    ],
+  },
+  moduleFileExtensions: ['ts', 'html', 'js', 'json', 'mjs'],
+  resolver: 'jest-preset-angular/build/resolvers/ng-jest-resolver.js',
+  watchPlugins: [
+    'jest-watch-typeahead/filename',
+    'jest-watch-typeahead/testname',
+  ],
+  watchPathIgnorePatterns: [
+    '<rootDir>/node_modules/',
+    '<rootDir>/dist/',
+    '<rootDir>/.git/',
+    '<rootDir>/coverage/',
+  ],
+  watch: false,
+  watchAll: false,
 };
