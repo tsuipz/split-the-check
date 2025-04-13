@@ -23,8 +23,13 @@ export class GroupsService {
 
   constructor(private firestore: Firestore) {}
 
-  getGroups(): Observable<Group[]> {
-    return collectionData(this.groupsCollection) as Observable<Group[]>;
+  getGroups(userId: string): Observable<Group[]> {
+    const groupsQuery = query(
+      this.groupsCollection,
+      where('members', 'array-contains', userId),
+    );
+
+    return collectionData(groupsQuery).pipe(map((groups) => groups as Group[]));
   }
 
   public getGroupById(groupId: string, userId: string): Observable<Group> {
