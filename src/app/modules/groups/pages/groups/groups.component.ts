@@ -9,7 +9,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule } from '@angular/forms';
 import { DebtListComponent } from '@app/shared/components/debt-list/debt-list.component';
 import { Group } from '@app/core/models/interfaces';
-
+import { Store } from '@ngrx/store';
+import { GroupsActions } from '@app/core/stores/groups';
+import { Timestamp } from '@angular/fire/firestore';
 const GROUPS_DATA: Group[] = [
   {
     id: '1',
@@ -17,6 +19,7 @@ const GROUPS_DATA: Group[] = [
     members: ['1', '2', '3'],
     totalSpent: 1240,
     adminOwners: ['1'],
+    createdAt: Timestamp.now(),
   },
 ];
 
@@ -37,4 +40,10 @@ const MAT_MODULES = [
 })
 export class GroupsComponent {
   public groups = GROUPS_DATA;
+
+  constructor(private store: Store) {}
+
+  onCreateGroup() {
+    this.store.dispatch(GroupsActions.createGroup());
+  }
 }

@@ -1,4 +1,10 @@
 <mat-accordion multi>
+  <button mat-raised-button
+          class="mb-4"
+          (click)="onCreateGroup()">
+    Create Group
+  </button>
+
   @for (group of groups; track $index) {
   <mat-expansion-panel>
     <mat-expansion-panel-header>

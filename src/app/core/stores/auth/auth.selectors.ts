@@ -1,9 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { State } from './auth.reducers';
 
-export const selectUserState = createFeatureSelector<State>('users');
+const FEATURE_KEY = 'auth';
+
+export const selectAuthState = createFeatureSelector<State>(FEATURE_KEY);
 
 export const selectCurrentUserId = createSelector(
-  selectUserState,
+  selectAuthState,
   (state) => state.currentUserId,
 );
