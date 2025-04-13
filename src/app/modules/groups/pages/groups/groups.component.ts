@@ -11,7 +11,13 @@ import { DebtListComponent } from '@app/shared/components/debt-list/debt-list.co
 import { Group } from '@app/core/models/interfaces';
 
 const GROUPS_DATA: Group[] = [
-  { id: 1, groupName: 'Group 1', members: ['1', '2', '3'], amountSpent: 1240 },
+  {
+    id: '1',
+    name: 'Group 1',
+    members: ['1', '2', '3'],
+    totalSpent: 1240,
+    adminOwners: ['1'],
+  },
 ];
 
 const MAT_MODULES = [

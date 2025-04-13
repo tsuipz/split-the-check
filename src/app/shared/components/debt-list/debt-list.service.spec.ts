@@ -23,10 +23,11 @@ describe('DebtListService', () => {
     it('should return debts between group members', () => {
       // Arrange
       const group = {
-        id: 1,
-        groupName: 'Group 1',
+        id: '1',
+        name: 'Group 1',
         members: ['1', '2', '3'],
-        amountSpent: 40,
+        totalSpent: 40,
+        adminOwners: ['1'],
       };
       const recipts = [
         { id: 1, amount: 20.0, payerId: '1', payeeId: '3', groupId: 1 },
@@ -100,10 +101,11 @@ describe('DebtListService', () => {
     it('should return debts between group members if isChecked is true', () => {
       // Arrange
       const group = {
-        id: 1,
-        groupName: 'Group 1',
+        id: '1',
+        name: 'Group 1',
         members: ['1', '2', '3'],
-        amountSpent: 40,
+        totalSpent: 40,
+        adminOwners: ['1'],
       };
       const recipts = [
         { id: 1, amount: 20.0, payerId: '1', payeeId: '3', groupId: 1 },

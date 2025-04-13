@@ -4,14 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DebtListService } from './debt-list.service';
-import { User } from '@app/core/models/interfaces';
-
-interface Group {
-  id: number;
-  groupName: string;
-  members: string[];
-  amountSpent: number;
-}
+import { Group, User } from '@app/core/models/interfaces';
 
 interface PersonDebt {
   personId: string;
@@ -66,18 +59,19 @@ const USERS_DATA: Record<string, User> = {
 const MAT_MODULES = [MatSlideToggleModule, MatListModule];
 
 @Component({
-    selector: 'app-debt-list',
-    imports: [CommonModule, FormsModule, ...MAT_MODULES],
-    providers: [DebtListService],
-    templateUrl: './debt-list.component.html',
-    styleUrl: './debt-list.component.scss'
+  selector: 'app-debt-list',
+  imports: [CommonModule, FormsModule, ...MAT_MODULES],
+  providers: [DebtListService],
+  templateUrl: './debt-list.component.html',
+  styleUrl: './debt-list.component.scss',
 })
 export class DebtListComponent implements OnInit {
   @Input() public group: Group = {
-    id: 1,
-    groupName: 'Group 1',
+    id: '1',
+    name: 'Group 1',
     members: ['1', '2', '3'],
-    amountSpent: 1240,
+    totalSpent: 1240,
+    adminOwners: ['1'],
   };
   public users = USERS_DATA;
   public isChecked$ = signal<boolean>(false);
