@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { authGuard } from './auth.guard';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { AuthActions } from '../stores/auth';
+import { AuthActions, selectCurrentUserId } from '../stores/auth';
 
 const helperAuthGuard = () =>
   TestBed.runInInjectionContext(() => authGuard({} as any, {} as any));
@@ -31,6 +31,7 @@ describe('authGuard', () => {
     });
 
     storeMock = TestBed.inject(MockStore);
+    storeMock.overrideSelector(selectCurrentUserId, '123');
   });
 
   it('should allow navigation if the user is logged in', async () => {

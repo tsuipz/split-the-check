@@ -8,7 +8,7 @@ export const routes: Routes = [
       import('./pages/groups/groups.component').then((m) => m.GroupsComponent),
   },
   {
-    path: ':id',
+    path: ':groupId',
     loadComponent: () =>
       import('./pages/group/group.component').then((m) => m.GroupComponent),
   },

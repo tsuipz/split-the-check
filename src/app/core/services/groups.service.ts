@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import {
   Firestore,
   collection,
-  doc,
-  docData,
   collectionData,
   addDoc,
   updateDoc,
   Timestamp,
+  query,
+  where,
+  getDocs,
+  DocumentReference,
 } from '@angular/fire/firestore';
 import { Group } from '@app/core/models/interfaces';
-import { Observable, from } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Observable, from, throwError } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -25,12 +27,32 @@ export class GroupsService {
     return collectionData(this.groupsCollection) as Observable<Group[]>;
   }
 
-  getGroupById(groupId: string): Observable<Group> {
-    const groupDoc = doc(this.groupsCollection, groupId);
-    return docData(groupDoc) as Observable<Group>;
+  public getGroupById(groupId: string, userId: string): Observable<Group> {
+    const groupQuery = query(
+      this.groupsCollection,
+      where('id', '==', groupId),
+      where('members', 'array-contains', userId),
+    );
+
+    return from(getDocs(groupQuery)).pipe(
+      map((memberSnapshot) => {
+        const doc = memberSnapshot.docs[0];
+
+        if (!doc) {
+          throw new Error('Group not found or user is not authorized');
+        }
+
+        return doc.data() as Group;
+      }),
+      catchError(() =>
+        throwError(
+          () => new Error('Group not found or user is not authorized'),
+        ),
+      ),
+    );
   }
 
-  createGroup(adminOwnerId: string): Observable<Group> {
+  public createGroup(adminOwnerId: string): Observable<Group> {
     const newGroup: Group = {
       id: '', // This will be set by Firestore
       name: 'New Group',
@@ -41,7 +63,7 @@ export class GroupsService {
     };
 
     return from(addDoc(this.groupsCollection, newGroup)).pipe(
-      switchMap((docRef) => {
+      switchMap((docRef: DocumentReference) => {
         const groupWithId: Group = {
           ...newGroup,
           id: docRef.id,

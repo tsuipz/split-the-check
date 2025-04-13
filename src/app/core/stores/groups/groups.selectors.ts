@@ -12,6 +12,12 @@ export const { selectIds, selectEntities, selectAll, selectTotal } =
 // Select all groups
 export const selectAllGroups = createSelector(selectGroupsState, selectAll);
 
+// Select all entities
+export const selectAllEntities = createSelector(
+  selectGroupsState,
+  selectEntities,
+);
+
 // Select loading state
 export const selectGroupsLoading = createSelector(
   selectGroupsState,

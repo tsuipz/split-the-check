@@ -13,7 +13,7 @@ import { environment } from '../environments/environment';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
-import { provideRouterStore } from '@ngrx/router-store';
+import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { authReducer, AuthEffects } from './core/stores/auth';
 import { groupsReducer, GroupsEffects } from './core/stores/groups';
@@ -21,6 +21,7 @@ import { groupsReducer, GroupsEffects } from './core/stores/groups';
 const REDUCERS = {
   auth: authReducer,
   groups: groupsReducer,
+  router: routerReducer,
 };
 
 const EFFECTS = [AuthEffects, GroupsEffects];
