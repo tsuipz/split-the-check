@@ -23,8 +23,17 @@ export class GroupsEffects {
   loadGroups$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(GroupsActions.loadGroups),
-      mergeMap(() => {
-        return this.groupsService.getGroups().pipe(
+      concatLatestFrom(() => this.store.select(selectCurrentUserId)),
+      mergeMap(([, userId]) => {
+        if (!userId) {
+          return of(
+            GroupsActions.loadGroupsFailure({
+              error: new HttpErrorResponse({ error: 'No user ID found' }),
+            }),
+          );
+        }
+
+        return this.groupsService.getGroups(userId).pipe(
           map((groups) => GroupsActions.loadGroupsSuccess({ groups })),
           catchError((error) => {
             return of(GroupsActions.loadGroupsFailure({ error }));
