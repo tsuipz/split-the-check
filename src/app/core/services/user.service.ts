@@ -7,7 +7,7 @@ import {
   docData,
   setDoc,
 } from '@angular/fire/firestore';
-import { map, Observable, of } from 'rxjs';
+import { from, map, Observable, of, switchMap } from 'rxjs';
 import { User } from '../models/interfaces';
 
 @Injectable({
@@ -38,7 +38,7 @@ export class UserService {
     const user$ = docData(userDoc) as Observable<User>;
 
     return user$.pipe(
-      map((user) => {
+      switchMap((user) => {
         if (!user) {
           const userProfile: User = {
             id: afUser.uid,
@@ -51,9 +51,11 @@ export class UserService {
           // Create user profile
           setDoc(userDoc, userProfile);
 
-          return userProfile;
+          return from(setDoc(userDoc, userProfile)).pipe(
+            map(() => userProfile),
+          );
         }
-        return user;
+        return of(user);
       }),
     );
   }
