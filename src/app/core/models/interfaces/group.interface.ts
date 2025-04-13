@@ -1,7 +1,10 @@
+import { Timestamp } from '@angular/fire/firestore';
+
 export interface Group {
-  id: string; // Unique identifier for the group (Firestore document ID)
-  name: string; // Name of the group
-  members: string[]; // Array of user IDs who are members of the group
-  totalSpent: number; // Total amount spent by the group
-  adminOwners: string[]; // Array of user IDs who are designated as admin owners
+  id: string; // Unique identifier (typically set by Firestore)
+  name: string; // Group name
+  members: string[]; // List of user IDs in the group
+  totalSpent: number; // Accumulated spending for the group
+  adminOwners: string[]; // List of user IDs who are admin owners
+  createdAt: Timestamp; // Firestore Timestamp for creation date
 }

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebtListComponent } from './debt-list.component';
 import { DebtListService } from './debt-list.service';
+import { Timestamp } from '@angular/fire/firestore';
 
 describe('DebtListComponent', () => {
   let component: DebtListComponent;
@@ -38,6 +39,7 @@ describe('DebtListComponent', () => {
         members: ['1', '2', '3'],
         totalSpent: 1240,
         adminOwners: ['1'],
+        createdAt: Timestamp.now(),
       };
     });
 

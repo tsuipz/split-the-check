@@ -5,7 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { DebtListService } from './debt-list.service';
 import { Group, User } from '@app/core/models/interfaces';
-
+import { Timestamp } from '@angular/fire/firestore';
 interface PersonDebt {
   personId: string;
   groupId: string;
@@ -72,6 +72,7 @@ export class DebtListComponent implements OnInit {
     members: ['1', '2', '3'],
     totalSpent: 1240,
     adminOwners: ['1'],
+    createdAt: Timestamp.now(),
   };
   public users = USERS_DATA;
   public isChecked$ = signal<boolean>(false);

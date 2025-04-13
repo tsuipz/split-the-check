@@ -16,6 +16,14 @@ import { provideEffects } from '@ngrx/effects';
 import { provideRouterStore } from '@ngrx/router-store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { authReducer, AuthEffects } from './core/stores/auth';
+import { groupsReducer, GroupsEffects } from './core/stores/groups';
+
+const REDUCERS = {
+  auth: authReducer,
+  groups: groupsReducer,
+};
+
+const EFFECTS = [AuthEffects, GroupsEffects];
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,10 +33,8 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     provideAnimationsAsync(),
-    provideStore({
-      authReducer,
-    }),
-    provideEffects([AuthEffects]),
+    provideStore(REDUCERS),
+    provideEffects(EFFECTS),
     provideRouterStore(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],

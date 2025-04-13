@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { DebtListService } from './debt-list.service';
-import { User } from '@app/core/models/interfaces';
-
+import { User, Group } from '@app/core/models/interfaces';
+import { Timestamp } from '@angular/fire/firestore';
 describe('DebtListService', () => {
   let service: DebtListService;
 
@@ -22,12 +22,13 @@ describe('DebtListService', () => {
   describe('calculateGroupDebts', () => {
     it('should return debts between group members', () => {
       // Arrange
-      const group = {
+      const group: Group = {
         id: '1',
         name: 'Group 1',
         members: ['1', '2', '3'],
         totalSpent: 40,
         adminOwners: ['1'],
+        createdAt: Timestamp.now(),
       };
       const recipts = [
         { id: 1, amount: 20.0, payerId: '1', payeeId: '3', groupId: 1 },
@@ -100,12 +101,13 @@ describe('DebtListService', () => {
 
     it('should return debts between group members if isChecked is true', () => {
       // Arrange
-      const group = {
+      const group: Group = {
         id: '1',
         name: 'Group 1',
         members: ['1', '2', '3'],
         totalSpent: 40,
         adminOwners: ['1'],
+        createdAt: Timestamp.now(),
       };
       const recipts = [
         { id: 1, amount: 20.0, payerId: '1', payeeId: '3', groupId: 1 },
