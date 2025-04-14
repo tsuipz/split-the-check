@@ -49,3 +49,21 @@ export const loadGroupFailure = createAction(
   '[Groups] Load Group Failure',
   props<{ error: HttpErrorResponse }>(),
 );
+
+/**
+ * Add members to group actions
+ */
+export const addMembersToGroup = createAction(
+  '[Groups] Add Members To Group',
+  props<{ groupId: string; userIds: string[] }>(),
+);
+
+export const addMembersToGroupSuccess = createAction(
+  '[Groups] Add Members To Group Success',
+  props<{ group: Group }>(),
+);
+
+export const addMembersToGroupFailure = createAction(
+  '[Groups] Add Members To Group Failure',
+  props<{ error: HttpErrorResponse }>(),
+);

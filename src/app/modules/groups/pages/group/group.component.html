@@ -1,1 +1,20 @@
-<p>group works!</p>
+<ng-container *ngIf="group$ | async as group">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ group.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <h3>Members</h3>
+      <ul>
+        <li *ngFor="let memberId of group.members">{{ memberId }}</li>
+      </ul>
+
+      <button mat-raised-button
+              color="primary"
+              (click)="openAddMemberDialog(group.id)">
+        <mat-icon>add</mat-icon>
+        Add Member
+      </button>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

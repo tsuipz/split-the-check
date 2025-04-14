@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Add Members</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill"
+                  class="w-full">
+    <mat-label>Search users</mat-label>
+    <input matInput
+           [(ngModel)]="searchQuery"
+           (ngModelChange)="onSearchChange($event)"
+           placeholder="Search by name or email" />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-chip-listbox *ngIf="selectedUsers.length > 0"
+                    class="mb-4">
+    <mat-chip *ngFor="let user of selectedUsers"
+              [removable]="true"
+              (removed)="removeUser(user)">
+      {{ user.name }}
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+  </mat-chip-listbox>
+
+  <mat-list *ngIf="searchResults.length > 0">
+    <mat-list-item *ngFor="let user of searchResults">
+      <div matListItemTitle>{{ user.name }}</div>
+      <div matListItemLine>{{ user.email }}</div>
+      <div matListItemMeta
+           class="user-list-meta">
+        <button mat-icon-button
+                color="primary"
+                (click)="addUser(user)">
+          <mat-icon>add_circle</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+  <p *ngIf="searchQuery && searchResults.length === 0">No users found</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button
+          (click)="onCancel()">Cancel</button>
+  <button mat-raised-button
+          color="primary"
+          [disabled]="selectedUsers.length === 0"
+          (click)="addSelectedUsers()">
+    Add Selected ({{ selectedUsers.length }})
+  </button>
+</mat-dialog-actions>

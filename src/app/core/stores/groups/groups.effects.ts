@@ -128,4 +128,18 @@ export class GroupsEffects {
     },
     { dispatch: false },
   );
+
+  public addMembersToGroup$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(GroupsActions.addMembersToGroup),
+      mergeMap(({ groupId, userIds }) => {
+        return this.groupsService.addMembersToGroup(groupId, userIds).pipe(
+          map((group) => GroupsActions.addMembersToGroupSuccess({ group })),
+          catchError((error) => {
+            return of(GroupsActions.addMembersToGroupFailure({ error }));
+          }),
+        );
+      }),
+    );
+  });
 }
