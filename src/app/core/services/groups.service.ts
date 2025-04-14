@@ -10,6 +10,8 @@ import {
   where,
   getDocs,
   DocumentReference,
+  doc,
+  getDoc,
 } from '@angular/fire/firestore';
 import { Group } from '@app/core/models/interfaces';
 import { Observable, from, throwError } from 'rxjs';
@@ -76,6 +78,37 @@ export class GroupsService {
 
         return from(updateDoc(docRef, { id: docRef.id })).pipe(
           map(() => groupWithId),
+        );
+      }),
+    );
+  }
+
+  public addMembersToGroup(
+    groupId: string,
+    userIds: string[],
+  ): Observable<Group> {
+    const groupDoc = doc(this.groupsCollection, groupId);
+
+    return from(getDoc(groupDoc)).pipe(
+      map((doc) => doc.data() as Group),
+      switchMap((group) => {
+        const existingSet = new Set(group.members);
+
+        for (const userId of userIds) {
+          existingSet.add(userId);
+        }
+
+        const updatedGroup: Group = {
+          ...group,
+          members: Array.from(existingSet),
+        };
+
+        return from(
+          updateDoc(groupDoc, { members: updatedGroup.members }),
+        ).pipe(
+          map(() => {
+            return updatedGroup;
+          }),
         );
       }),
     );

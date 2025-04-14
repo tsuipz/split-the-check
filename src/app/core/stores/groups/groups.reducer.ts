@@ -103,4 +103,32 @@ export const groupsReducer = createReducer(
       isLoading: false,
     }),
   ),
+
+  // Add Members to Group
+  on(
+    GroupsActions.addMembersToGroup,
+    (state): GroupsState => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    }),
+  ),
+
+  on(
+    GroupsActions.addMembersToGroupSuccess,
+    (state, { group }): GroupsState =>
+      groupsAdapter.upsertOne(group, {
+        ...state,
+        isLoading: false,
+      }),
+  ),
+
+  on(
+    GroupsActions.addMembersToGroupFailure,
+    (state, { error }): GroupsState => ({
+      ...state,
+      error,
+      isLoading: false,
+    }),
+  ),
 );
