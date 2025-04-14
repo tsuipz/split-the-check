@@ -9,3 +9,10 @@ export const selectCurrentUserId = createSelector(
   selectAuthState,
   (state) => state.currentUserId,
 );
+
+export const selectUsersByIds = (userIds: string[]) =>
+  createSelector(selectAuthState, (state) =>
+    userIds
+      .map((id) => state.entities[id])
+      .filter((user) => user !== undefined),
+  );

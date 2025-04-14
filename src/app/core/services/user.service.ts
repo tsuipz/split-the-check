@@ -6,8 +6,9 @@ import {
   doc,
   docData,
   setDoc,
+  getDoc,
 } from '@angular/fire/firestore';
-import { from, map, Observable, of, switchMap } from 'rxjs';
+import { from, map, Observable, of, switchMap, forkJoin } from 'rxjs';
 import { User } from '../models/interfaces';
 
 @Injectable({
@@ -78,8 +79,18 @@ export class UserService {
    */
   public getUserProfileById(userId: string): Observable<User> {
     const userDoc = doc(this.usersCollection, userId);
-    const user$ = docData(userDoc) as Observable<User>;
+    const user$ = from(getDoc(userDoc)).pipe(map((doc) => doc.data() as User));
 
     return user$;
+  }
+
+  /**
+   * Get multiple users by their IDs
+   * @param userIds - string[]
+   * @returns - User[]
+   */
+  public getUsersByIds(userIds: string[]): Observable<User[]> {
+    const userDocs = userIds.map((id) => this.getUserProfileById(id));
+    return forkJoin(userDocs);
   }
 }

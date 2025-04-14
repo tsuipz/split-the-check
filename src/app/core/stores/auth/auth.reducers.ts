@@ -35,4 +35,13 @@ export const authReducer = createReducer(
     return adapter.addOne(user, { ...state, currentUserId: user.id });
   }),
   on(AuthActions.getUserProfileFailure, (state): State => ({ ...state })),
+
+  /**
+   * Load users by IDs actions
+   */
+  on(AuthActions.loadUsersByIds, (state): State => ({ ...state })),
+  on(AuthActions.loadUsersByIdsSuccess, (state, { users }): State => {
+    return adapter.upsertMany(users, state);
+  }),
+  on(AuthActions.loadUsersByIdsFailure, (state): State => ({ ...state })),
 );

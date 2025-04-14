@@ -68,4 +68,22 @@ export class AuthEffects {
       ),
     );
   });
+
+  /**
+   * Load users by IDs effect
+   */
+  public loadUsersByIds$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.loadUsersByIds),
+      switchMap(({ userIds }) =>
+        from(this.userService.getUsersByIds(userIds)).pipe(
+          mapResponse({
+            next: (users) => AuthActions.loadUsersByIdsSuccess({ users }),
+            error: (error: HttpErrorResponse) =>
+              AuthActions.loadUsersByIdsFailure({ error }),
+          }),
+        ),
+      ),
+    );
+  });
 }

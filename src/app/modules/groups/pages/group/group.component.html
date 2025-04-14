@@ -1,4 +1,4 @@
-<ng-container *ngIf="group$ | async as group">
+<ng-container *ngIf="groupWithMembers$ | async as group">
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ group.name }}</mat-card-title>
@@ -6,7 +6,9 @@
     <mat-card-content>
       <h3>Members</h3>
       <ul>
-        <li *ngFor="let memberId of group.members">{{ memberId }}</li>
+        <li *ngFor="let member of group.members">
+          {{ member.name }} ({{ member.email }})
+        </li>
       </ul>
 
       <button mat-raised-button

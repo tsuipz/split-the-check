@@ -1,7 +1,13 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { groupsAdapter, GroupsState } from './groups.reducer';
+import { Group, User } from '@app/core/models/interfaces';
+import { selectUsersByIds } from '../auth/auth.selectors';
 
 const FEATURE_KEY = 'groups';
+
+export interface GroupWithMembers extends Omit<Group, 'members'> {
+  members: User[];
+}
 
 export const selectGroupsState =
   createFeatureSelector<GroupsState>(FEATURE_KEY);
@@ -41,3 +47,17 @@ export const selectGroupsByIds = (groupIds: string[]) =>
       .map((id) => state.entities[id])
       .filter((group) => group !== undefined),
   );
+
+export const selectGroupWithMembers = (
+  group: Group,
+  users: User[],
+): GroupWithMembers => ({
+  ...group,
+  members: users,
+});
+
+export const selectGroupWithMembersFromState = (group: Group) =>
+  createSelector(selectUsersByIds(group.members), (users: User[]) => ({
+    ...group,
+    members: users,
+  }));
