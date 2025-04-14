@@ -40,3 +40,21 @@ export const getUserProfileFailure = createAction(
   '[Auth] Get User Failure',
   props<{ error: HttpErrorResponse }>(),
 );
+
+/**
+ * Load multiple users by their IDs actions
+ */
+export const loadUsersByIds = createAction(
+  '[Auth] Load Users By Ids',
+  props<{ userIds: string[] }>(),
+);
+
+export const loadUsersByIdsSuccess = createAction(
+  '[Auth] Load Users By Ids Success',
+  props<{ users: User[] }>(),
+);
+
+export const loadUsersByIdsFailure = createAction(
+  '[Auth] Load Users By Ids Failure',
+  props<{ error: HttpErrorResponse }>(),
+);
