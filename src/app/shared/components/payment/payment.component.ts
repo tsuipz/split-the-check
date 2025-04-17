@@ -1,11 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+const MUI = [MatFormFieldModule, MatInputModule];
 
 @Component({
   selector: 'app-payment',
-  imports: [],
+  imports: [CommonModule, ...MUI],
   templateUrl: './payment.component.html',
-  styleUrl: './payment.component.scss'
+  styleUrl: './payment.component.scss',
 })
-export class PaymentComponent {
-
-}
+export class PaymentComponent {}
