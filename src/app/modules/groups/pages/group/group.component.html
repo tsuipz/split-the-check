@@ -1,4 +1,9 @@
 <ng-container *ngIf="groupWithMembers$ | async as group">
+  <button mat-flat-button
+          color="primary"
+          (click)="onRouteToPayment()">
+    Add Payment
+  </button>
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ group.name }}</mat-card-title>
