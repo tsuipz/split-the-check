@@ -1,13 +1,32 @@
 <h1 class="text-2xl">Add a payment</h1>
 
-<h2 class="text-xl">With you and SELECTED GROUP</h2>
+<h2 class="text-xl">With <span class="font-bold">you</span> and <strong>SELECTED GROUP</strong></h2>
 
-<section class="flex flex-col gap-4">
-  <app-categories />
+<mat-progress-bar mode="determinate"
+                  [value]="progress"></mat-progress-bar>
 
-  <mat-form-field>
-    <mat-label>Input</mat-label>
-    <input matInput
-           placeholder="Placeholder">
-  </mat-form-field>
+@switch (progress) {
+@case (30) {
+<app-expense [form]="form.controls.expense" />
+}
+@case (60) {
+<app-paid-by [form]="form.controls.paidBy"
+             [currency]="form.controls.expense.controls.currency"
+             [amount]="form.controls.expense.controls.amount" />
+}
+@case (90) {
+<mat-progress-bar mode="determinate"
+                  value="90"></mat-progress-bar>
+}
+@case (100) {
+<mat-progress-bar mode="determinate"
+                  value="100"></mat-progress-bar>
+}
+}
+
+<section class="flex gap-4">
+  <button mat-stroked-button
+          (click)="previousStep()">{{ previousBtnText }}</button>
+  <button mat-flat-button
+          (click)="nextStep()">{{ nextBtnText }}</button>
 </section>

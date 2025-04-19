@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +17,7 @@ const MUI = [MatListModule, MatIconModule, MatDialogModule, MatButtonModule];
   imports: [ReactiveFormsModule, ...MUI],
   templateUrl: './categories-dialog.component.html',
   styleUrl: './categories-dialog.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesDialogComponent {
   public form = this.fb.group({

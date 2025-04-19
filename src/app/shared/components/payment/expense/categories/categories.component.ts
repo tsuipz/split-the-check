@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,6 +7,7 @@ import {
   Category,
 } from './categories-dialog/categories-dialog.component';
 import { take } from 'rxjs';
+import { FormBuilder } from '@angular/forms';
 
 const MUI = [MatButtonModule, MatIconModule];
 
@@ -15,20 +16,21 @@ const MUI = [MatButtonModule, MatIconModule];
   imports: [...MUI],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesComponent {
-  public category = signal<Category>({
+  @Input() control = this.fb.control<Category | null>({
     name: 'General',
     icon: 'receipt',
   });
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private fb: FormBuilder) {}
 
   openCategoriesDialog(): void {
     this.dialog
       .open(CategoriesDialogComponent, {
         data: {
-          categories: [this.category()],
+          categories: [this.control.value],
         },
         width: '500px',
         height: '400px',
@@ -38,7 +40,7 @@ export class CategoriesComponent {
       .subscribe((result: { selectedCategory: Category[] } | null) => {
         // If the dialog is saved with results and the category is selected, update the category
         if (result && result.selectedCategory.length > 0) {
-          this.category.set(result.selectedCategory[0]);
+          this.control.setValue(result.selectedCategory[0]);
         }
       });
   }

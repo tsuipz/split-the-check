@@ -1,0 +1,66 @@
+<form [formGroup]="form"
+      class="payer">
+
+  <h2 class="text-xl">Paid by:</h2>
+
+  <!-- Payer type -->
+  <mat-button-toggle-group formControlName="payerByType">
+    <mat-button-toggle value="single">Single</mat-button-toggle>
+    <mat-button-toggle value="multiple">Multiple</mat-button-toggle>
+  </mat-button-toggle-group>
+
+  <!-- Single payer -->
+  @if (form.value.payerByType === 'single') {
+  <mat-selection-list formControlName="singlePayer"
+                      [multiple]="false">
+    @for (member of members$ | async; track member.id) {
+    <mat-list-option [value]="member.id">
+      <section class="flex flex-col">
+        <h4 class="font-medium">{{ member.name }}</h4>
+        <p class="text-sm text-gray-500">{{ member.email }}</p>
+      </section>
+    </mat-list-option>
+    }
+  </mat-selection-list>
+
+  }
+
+  <!-- Multiple payers -->
+  @if (form.value.payerByType === 'multiple') {
+  <section formArrayName="multiplePayers"
+           class="my-4">
+    @for (payer of form.value.multiplePayers; track payer.id; let i = $index) {
+    <article [formGroupName]="i"
+             class="flex gap-4 justify-between">
+      <section class="flex flex-col">
+        <h4 class="font-medium">{{ payer.name }}</h4>
+        <p class="text-sm text-gray-500">{{ payer.email }}</p>
+      </section>
+      <mat-form-field floatLabel="always">
+        <mat-label>Amount</mat-label>
+        <input matInput
+               formControlName="amount"
+               type="number"
+               placeholder="0.00"
+               type="number"
+               (blur)="onMultiplePayersErrorMessage()" />
+        <span matTextPrefix>{{ currency.value?.symbol }}</span>
+      </mat-form-field>
+    </article>
+    }
+
+    <!-- Total amount -->
+    <section class="flex flex-col items-center">
+      <h4 class="font-medium">{{ sumAmount | currency: currency.value?.code }} of
+        {{ amount.value | currency: currency.value?.code }}</h4>
+      <p class="text-sm text-gray-500">{{ amountLeft | currency: currency.value?.code }} left</p>
+    </section>
+
+    <!-- Error message -->
+    <p class="text-sm text-red-500"
+       *ngIf="form.controls.multiplePayers.invalid">
+      {{ multiplePayersErrorSignal() }}
+    </p>
+  </section>
+  }
+</form>
