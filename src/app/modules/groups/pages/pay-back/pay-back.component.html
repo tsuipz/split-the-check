@@ -1,1 +1,14 @@
-<p>pay-back works!</p>
+<main class="flex flex-col gap-4">
+  @for (member of membersWithPayments$ | async; track member.user.id) {
+  <section class="flex flex-row gap-4 justify-between">
+    <article class="flex flex-col">
+      <h4 class="font-medium">{{ member.user.name }}</h4>
+      <p class="text-sm text-gray-500">{{ member.user.email }}</p>
+    </article>
+
+    <article>
+      Payment text
+    </article>
+  </section>
+  }
+</main>
