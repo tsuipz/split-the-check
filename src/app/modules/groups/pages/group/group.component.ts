@@ -45,7 +45,6 @@ export class GroupComponent implements OnInit {
     filter((groupId): groupId is string => groupId !== undefined),
     switchMap((groupId) => this.store.select(selectGroupById(groupId))),
   );
-
   public groupWithMembers$: Observable<GroupWithMembers> = this.group$.pipe(
     switchMap((group) => {
       if (!group) {

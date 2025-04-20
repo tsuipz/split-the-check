@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { GroupsService } from '@app/core/services/groups.service';
 import { Router } from '@angular/router';
 import * as GroupsSelectors from './groups.selectors';
+import { PaymentsActions } from '../payments';
 
 @Injectable()
 export class GroupsEffects {
@@ -140,6 +141,18 @@ export class GroupsEffects {
           }),
         );
       }),
+    );
+  });
+
+  /**
+   * Get payments by group effect
+   */
+  public getPaymentsByGroup$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(GroupsActions.loadGroupSuccess),
+      map(({ group }) =>
+        PaymentsActions.getPaymentsByGroup({ groupId: group.id }),
+      ),
     );
   });
 }

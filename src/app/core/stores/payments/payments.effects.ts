@@ -74,4 +74,23 @@ export class PaymentsEffects {
       }),
     );
   });
+
+  /**
+   * Get payments by group effect
+   */
+  public getPaymentsByGroup$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentsActions.getPaymentsByGroup),
+      mergeMap(({ groupId }) => {
+        return this.paymentsService.getPaymentsByGroup(groupId).pipe(
+          map((payments) =>
+            PaymentsActions.getPaymentsByGroupSuccess({ payments }),
+          ),
+          catchError((error) =>
+            of(PaymentsActions.getPaymentsByGroupFailure({ error })),
+          ),
+        );
+      }),
+    );
+  });
 }

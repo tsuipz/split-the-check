@@ -117,4 +117,23 @@ export const paymentsReducer = createReducer(
       error: error.message,
     }),
   ),
+
+  // Get payments by group
+  on(
+    PaymentsActions.getPaymentsByGroup,
+    (state): PaymentsState => ({ ...state, loading: true, error: null }),
+  ),
+  on(
+    PaymentsActions.getPaymentsByGroupSuccess,
+    (state, { payments }): PaymentsState =>
+      paymentsAdapter.setAll(payments, { ...state, loading: false }),
+  ),
+  on(
+    PaymentsActions.getPaymentsByGroupFailure,
+    (state, { error }): PaymentsState => ({
+      ...state,
+      loading: false,
+      error: error.message,
+    }),
+  ),
 );

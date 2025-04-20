@@ -19,6 +19,13 @@ export const routes: Routes = [
         (m) => m.PaymentComponent,
       ),
   },
+  {
+    path: ':groupId/pay-back',
+    loadComponent: () =>
+      import('./pages/pay-back/pay-back.component').then(
+        (m) => m.PayBackComponent,
+      ),
+  },
 ];
 
 @NgModule({
