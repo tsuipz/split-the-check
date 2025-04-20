@@ -11,8 +11,7 @@ export interface PaymentsState extends EntityState<Payment> {
 export const paymentsAdapter: EntityAdapter<Payment> =
   createEntityAdapter<Payment>({
     selectId: (payment: Payment) => payment.id,
-    sortComparer: (a: Payment, b: Payment) =>
-      b.date.getTime() - a.date.getTime(),
+    sortComparer: (a: Payment, b: Payment) => b.date.seconds - a.date.seconds,
   });
 
 export const initialPaymentsState: PaymentsState =

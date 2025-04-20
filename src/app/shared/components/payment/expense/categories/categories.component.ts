@@ -2,12 +2,10 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  CategoriesDialogComponent,
-  Category,
-} from './categories-dialog/categories-dialog.component';
+import { CategoriesDialogComponent } from './categories-dialog/categories-dialog.component';
 import { take } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
+import { Category } from '@app/core/models/interfaces/category.interface';
 
 const MUI = [MatButtonModule, MatIconModule];
 

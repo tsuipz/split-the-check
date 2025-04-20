@@ -4,11 +4,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-
-export interface Category {
-  name: string;
-  icon: string;
-}
+import { Category } from '@app/core/models/interfaces/category.interface';
 
 const MUI = [MatListModule, MatIconModule, MatDialogModule, MatButtonModule];
 

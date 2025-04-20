@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Timestamp } from '@angular/fire/firestore';
 import {
   AbstractControl,
   FormArray,
@@ -9,7 +10,12 @@ import {
 
 import { FormControl, FormGroup } from '@angular/forms';
 import { CURRENCY_OPTIONS } from '@app/core/models/constants';
-import { Currency, User } from '@app/core/models/interfaces';
+import {
+  Currency,
+  Payment,
+  PaymentSplit,
+  User,
+} from '@app/core/models/interfaces';
 import { Category } from '@app/core/models/interfaces/category.interface';
 
 export type SplitType = 'equal' | 'exact' | 'percentage';
@@ -156,12 +162,109 @@ export class PaymentFormService {
           id: new FormControl(member.id),
           name: new FormControl(member.name),
           email: new FormControl(member.email),
-          selected: new FormControl(true),
+          selected: new FormControl<boolean | null>(true),
           amount: new FormControl<number | null>(null),
         });
         splitMembers.push(splitMember);
       });
     }
+  }
+
+  public onSubmit(groupId: string): Omit<Payment, 'id'> {
+    const formValue = this.form.getRawValue();
+    const { expense, paidBy, splitWith } = formValue;
+
+    const amount = expense.amount || 0;
+    const currencyCode = expense.currency?.code || 'USD';
+
+    // Create paidBy map for payer(s)
+    let paidByMap: { memberId: string; amount: number }[] = [];
+    // If single payer, create a map with the payer's ID and amount
+    if (formValue.paidBy.payerByType === 'single') {
+      paidByMap = [
+        {
+          memberId:
+            paidBy.singlePayer && paidBy.singlePayer.length > 0
+              ? paidBy.singlePayer[0]
+              : '',
+          amount: expense.amount || 0,
+        },
+      ]; // there is only one payer based on the form value
+    } else {
+      // If multiple payers, create a map with the payer's ID and amount
+      paidByMap = paidBy.multiplePayers.map((member) => ({
+        memberId: member.id || '',
+        amount: member.amount || 0,
+      }));
+    }
+
+    // Create splits for each member
+    const splitType = splitWith.splitType || 'equal';
+    let splits: PaymentSplit[] = [];
+
+    switch (splitType) {
+      case 'equal': {
+        const selectedMembers = splitWith.splitMembers.filter(
+          (member) => member.selected,
+        );
+        const count = selectedMembers.length;
+        const amount = expense.amount || 0;
+        const splitAmount = amount / count;
+        const splitAmountRounded = Math.round(splitAmount * 100) / 100;
+
+        splits = selectedMembers.map((member) => ({
+          memberId: member.id || '',
+          value: splitAmountRounded,
+        }));
+        break;
+      }
+      case 'exact': {
+        const selectedMembers = splitWith.splitMembers.filter(
+          (member) => member.amount,
+        );
+
+        splits = selectedMembers.map((member) => ({
+          memberId: member.id || '',
+          value: member.amount || 0,
+        }));
+        break;
+      }
+      case 'percentage': {
+        const selectedMembers = splitWith.splitMembers
+          .filter((member) => member.amount)
+          .map((member) => {
+            const percentage = member.amount || 0; // 68
+            const percentageRounded = Math.round(percentage) / 100; // Math.round(68) / 10000 = 0.68
+            const exactAmount = amount * percentageRounded; // 40 * 0.68 = 27.2
+
+            return {
+              ...member,
+              amount: exactAmount,
+            };
+          });
+
+        splits = selectedMembers.map((member) => ({
+          memberId: member.id || '',
+          value: member.amount || 0,
+        }));
+        break;
+      }
+    }
+
+    const payment: Omit<Payment, 'id'> = {
+      amount,
+      currency: currencyCode,
+      date: Timestamp.now(),
+      paidBy: paidByMap,
+      paymentType: 'check',
+      groupId,
+      description: expense.description || '',
+      category: expense.category?.name || 'General',
+      splitType,
+      splits,
+    };
+
+    return payment;
   }
 
   public onIsHideMultiplePayers() {

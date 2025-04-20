@@ -5,9 +5,13 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import * as PaymentsActions from './payments.actions';
 import { PaymentsService } from '@app/core/services/payments.service';
 import { Payment } from '@app/core/models/interfaces';
-
 @Injectable()
 export class PaymentsEffects {
+  constructor(
+    private actions$: Actions,
+    private paymentsService: PaymentsService,
+  ) {}
+
   loadPayments$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentsActions.loadPayments),
@@ -24,7 +28,10 @@ export class PaymentsEffects {
     );
   });
 
-  createPayment$ = createEffect(() => {
+  /**
+   * Create payment effect
+   */
+  public createPayment$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentsActions.createPayment),
       mergeMap(({ payment }) => {
@@ -67,9 +74,4 @@ export class PaymentsEffects {
       }),
     );
   });
-
-  constructor(
-    private actions$: Actions,
-    private paymentsService: PaymentsService,
-  ) {}
 }

@@ -1,4 +1,6 @@
+import { CategoryType } from '../types';
+
 export interface Category {
-  name: string;
+  name: CategoryType;
   icon: string;
 }

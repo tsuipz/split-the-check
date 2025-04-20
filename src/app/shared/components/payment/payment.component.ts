@@ -24,6 +24,7 @@ import { Timestamp } from '@angular/fire/firestore';
 import { GroupWithMembers } from '@app/core/stores/groups/groups.selectors';
 import { selectGroupId } from '@app/core/stores/router/router.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { PaymentsActions } from '@app/core/stores/payments';
 
 const COMPONENTS = [ExpenseComponent, PaidByComponent, SplitWithComponent];
 
@@ -148,7 +149,17 @@ export class PaymentComponent implements OnInit {
       splitWith.markAsDirty();
 
       if (splitWith.valid) {
-        this.progress = 100;
+        this.groupId$.pipe(take(1)).subscribe((groupId) => {
+          if (groupId) {
+            const payment = this.paymentFormService.onSubmit(groupId);
+
+            this.store.dispatch(PaymentsActions.createPayment({ payment }));
+
+            this.router.navigate(['..'], {
+              relativeTo: this.activatedRoute,
+            });
+          }
+        });
       }
     }
   }
