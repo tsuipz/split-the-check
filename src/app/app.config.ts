@@ -17,14 +17,16 @@ import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { authReducer, AuthEffects } from './core/stores/auth';
 import { groupsReducer, GroupsEffects } from './core/stores/groups';
+import { paymentsReducer, PaymentsEffects } from './core/stores/payments';
 
 const REDUCERS = {
   auth: authReducer,
   groups: groupsReducer,
   router: routerReducer,
+  payments: paymentsReducer,
 };
 
-const EFFECTS = [AuthEffects, GroupsEffects];
+const EFFECTS = [AuthEffects, GroupsEffects, PaymentsEffects];
 
 export const appConfig: ApplicationConfig = {
   providers: [
