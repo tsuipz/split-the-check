@@ -104,6 +104,13 @@ export class GroupComponent implements OnInit {
       });
   }
 
+  public onRouteToPayBack(): void {
+    // go to the pay back page
+    this.router.navigate(['.', 'pay-back'], {
+      relativeTo: this.activatedRoute,
+    });
+  }
+
   public onRouteToPayment(): void {
     // go to the payment page
     this.router.navigate(['.', 'payment'], { relativeTo: this.activatedRoute });
