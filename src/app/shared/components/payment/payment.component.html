@@ -12,15 +12,13 @@
 @case (60) {
 <app-paid-by [form]="form.controls.paidBy"
              [currency]="form.controls.expense.controls.currency"
-             [amount]="form.controls.expense.controls.amount" />
+             [amount]="form.controls.expense.controls.amount"
+             [members]="(members$ | async) || []" />
 }
 @case (90) {
-<mat-progress-bar mode="determinate"
-                  value="90"></mat-progress-bar>
-}
-@case (100) {
-<mat-progress-bar mode="determinate"
-                  value="100"></mat-progress-bar>
+<app-split-with [form]="form.controls.splitWith"
+                [currency]="form.controls.expense.controls.currency"
+                [amount]="form.controls.expense.controls.amount" />
 }
 }
 

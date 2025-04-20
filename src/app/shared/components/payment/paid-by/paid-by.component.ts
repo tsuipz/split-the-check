@@ -1,33 +1,17 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
-  DestroyRef,
   signal,
   Input,
 } from '@angular/core';
-import { Timestamp } from '@angular/fire/firestore';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { filter, map, switchMap, take } from 'rxjs/operators';
-import { GroupsActions, GroupsSelectors } from '@app/core/stores/groups';
-import { GroupWithMembers } from '@app/core/stores/groups/groups.selectors';
-import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatListModule } from '@angular/material/list';
-import { AuthActions, AuthSelectors } from '@app/core/stores/auth';
-import { selectGroupId } from '@app/core/stores/router/router.selectors';
-import { Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Currency } from '@app/core/models/interfaces';
+import { Currency, User } from '@app/core/models/interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-  MultiplePayersFormGroup,
-  PaidByForm,
-  PaymentFormService,
-} from '../payment.form.service';
+import { MultiplePayersFormGroup, PaidByForm } from '../payment.form.service';
 
 const MUI = [
   MatButtonToggleModule,
@@ -43,9 +27,9 @@ const MUI = [
   styleUrl: './paid-by.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaidByComponent implements OnInit {
+export class PaidByComponent {
   @Input() form = this.fb.group<PaidByForm>({
-    payerByType: this.fb.control('single'), // single, multiple
+    payerByType: this.fb.control('single'),
     singlePayer: this.fb.control(null),
     multiplePayers: this.fb.array<MultiplePayersFormGroup>([]),
   });
@@ -55,38 +39,8 @@ export class PaidByComponent implements OnInit {
     label: 'United States Dollar',
   });
   @Input() amount = this.fb.control<number | null>(100);
+  @Input() members: User[] = [];
 
-  private groupId$ = this.store.select(selectGroupId);
-  private group$ = this.groupId$.pipe(
-    filter((groupId): groupId is string => groupId !== undefined),
-    switchMap((groupId) =>
-      this.store.select(GroupsSelectors.selectGroupById(groupId)),
-    ),
-  );
-  private user$ = this.store.select(AuthSelectors.selectCurrentUserId);
-  private groupWithMembers$: Observable<GroupWithMembers> = this.group$.pipe(
-    switchMap((group) => {
-      if (!group) {
-        const emptyGroup: GroupWithMembers = {
-          id: '',
-          name: '',
-          members: [],
-          totalSpent: 0,
-          adminOwners: [],
-          createdAt: Timestamp.now(),
-        };
-        return of(emptyGroup);
-      }
-
-      this.store.dispatch(
-        AuthActions.loadUsersByIds({ userIds: group.members }),
-      );
-      return this.store.select(
-        GroupsSelectors.selectGroupWithMembersFromState(group),
-      );
-    }),
-  );
-  public members$ = this.groupWithMembers$.pipe(map((group) => group.members));
   public multiplePayersErrorSignal = signal('');
 
   public get sumAmount() {
@@ -100,37 +54,7 @@ export class PaidByComponent implements OnInit {
     return this.amount.value ? this.amount.value - this.sumAmount : 0;
   }
 
-  constructor(
-    private fb: FormBuilder,
-    private store: Store,
-    private router: Router,
-    private destroyRef: DestroyRef,
-    private paymentFormService: PaymentFormService,
-  ) {}
-
-  public ngOnInit(): void {
-    this.groupId$.pipe(take(1)).subscribe((groupId) => {
-      if (groupId) {
-        this.store.dispatch(GroupsActions.loadGroup({ groupId }));
-      } else {
-        this.router.navigate(['/groups']);
-      }
-    });
-
-    this.user$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((userId) => {
-      if (userId) {
-        this.form.patchValue({
-          singlePayer: [userId],
-        });
-      }
-    });
-
-    this.members$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((members) => {
-        this.paymentFormService.onSetupMultiplePayers(members);
-      });
-  }
+  constructor(private fb: FormBuilder) {}
 
   public onMultiplePayersErrorMessage() {
     const multiplePayers = this.form.controls.multiplePayers;

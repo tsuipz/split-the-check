@@ -13,7 +13,7 @@
   @if (form.value.payerByType === 'single') {
   <mat-selection-list formControlName="singlePayer"
                       [multiple]="false">
-    @for (member of members$ | async; track member.id) {
+    @for (member of members; track member.id) {
     <mat-list-option [value]="member.id">
       <section class="flex flex-col">
         <h4 class="font-medium">{{ member.name }}</h4>
@@ -42,7 +42,7 @@
                formControlName="amount"
                type="number"
                placeholder="0.00"
-               type="number"
+               min="0"
                (blur)="onMultiplePayersErrorMessage()" />
         <span matTextPrefix>{{ currency.value?.symbol }}</span>
       </mat-form-field>
