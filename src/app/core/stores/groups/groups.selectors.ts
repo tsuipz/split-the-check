@@ -48,14 +48,6 @@ export const selectGroupsByIds = (groupIds: string[]) =>
       .filter((group) => group !== undefined),
   );
 
-export const selectGroupWithMembers = (
-  group: Group,
-  users: User[],
-): GroupWithMembers => ({
-  ...group,
-  members: users,
-});
-
 export const selectGroupWithMembersFromState = (group: Group) =>
   createSelector(selectUsersByIds(group.members), (users: User[]) => ({
     ...group,

@@ -1,0 +1,24 @@
+<h4 mat-dialog-title>Categories</h4>
+
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-selection-list [formControl]="form.controls.selectedCategory"
+                        name="selectedCategory"
+                        [multiple]="false">
+      @for (category of categories; track category) {
+      <mat-list-option [value]="category">
+        <mat-icon matListItemIcon>{{category.icon}}</mat-icon>
+        <div matListItemTitle>{{category.name}}</div>
+      </mat-list-option>
+      }
+    </mat-selection-list>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button
+          mat-dialog-close>Cancel</button>
+  <button mat-flat-button
+          [mat-dialog-close]="form.value"
+          [disabled]="form.invalid">Save</button>
+</mat-dialog-actions>

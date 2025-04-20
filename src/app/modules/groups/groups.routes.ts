@@ -12,6 +12,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/group/group.component').then((m) => m.GroupComponent),
   },
+  {
+    path: ':groupId/payment',
+    loadComponent: () =>
+      import('../../shared/components/payment/payment.component').then(
+        (m) => m.PaymentComponent,
+      ),
+  },
 ];
 
 @NgModule({

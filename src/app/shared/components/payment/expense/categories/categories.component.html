@@ -1,0 +1,10 @@
+<section class="flex gap-4 items-center">
+  <h3 class="text-lg font-bold">Category:</h3>
+
+  <button mat-fab
+          extended
+          (click)="openCategoriesDialog()">
+    <mat-icon>{{ control.value?.icon }}</mat-icon>
+    {{ control.value?.name }}
+  </button>
+</section>

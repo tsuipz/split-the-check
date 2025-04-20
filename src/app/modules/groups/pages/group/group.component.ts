@@ -5,7 +5,7 @@ import { selectGroupId } from '@app/core/stores/router/router.selectors';
 import { take, switchMap, filter, Observable, of } from 'rxjs';
 import { GroupsActions } from '@app/core/stores/groups';
 import { AuthActions } from '@app/core/stores/auth';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -70,6 +70,7 @@ export class GroupComponent implements OnInit {
   constructor(
     private store: Store,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
   ) {}
 
@@ -101,5 +102,10 @@ export class GroupComponent implements OnInit {
           );
         }
       });
+  }
+
+  public onRouteToPayment(): void {
+    // go to the payment page
+    this.router.navigate(['.', 'payment'], { relativeTo: this.activatedRoute });
   }
 }

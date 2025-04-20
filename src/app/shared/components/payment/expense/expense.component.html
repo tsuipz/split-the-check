@@ -1,0 +1,44 @@
+<form [formGroup]="form"
+      class="flex flex-col gap-4">
+  <app-categories class="w-full"
+                  [control]="form.controls.category" />
+
+  <!-- Description   -->
+  <mat-form-field class="w-full">
+    <mat-label>Description</mat-label>
+    <input matInput
+           formControlName="description"
+           placeholder="Enter description">
+  </mat-form-field>
+
+  <section class="flex gap-4">
+    <!-- Currency -->
+    <mat-form-field class="w-full">
+      <mat-label>Currency</mat-label>
+      <mat-select formControlName="currency"
+                  placeholder="Select currency">
+        <mat-select-trigger>
+          {{ currency }}
+        </mat-select-trigger>
+        <mat-option *ngFor="let currency of currencyOptions"
+                    [value]="currency">
+          {{ currency.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Amount -->
+    <mat-form-field class="w-full">
+      <mat-label>Amount</mat-label>
+      <input matInput
+             formControlName="amount"
+             placeholder="0.00"
+             type="number"
+             required
+             (blur)="updateAmountErrorMessage()">
+      @if (form.controls.amount.invalid) {
+      <mat-error>{{amountErrorMessage()}}</mat-error>
+      }
+    </mat-form-field>
+  </section>
+</form>
