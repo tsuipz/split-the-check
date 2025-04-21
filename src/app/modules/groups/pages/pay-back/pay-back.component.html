@@ -1,6 +1,6 @@
 <main class="flex flex-col gap-4">
   @for (member of membersWithPayments$ | async; track member.user.id) {
-  @if (member.user.id !== userIdSignal()) {
+  @if (member.user.id !== (userId$ | async)) {
 
   <section class="flex flex-row gap-4 justify-between">
     <article class="flex flex-col">
@@ -9,9 +9,8 @@
     </article>
 
 
-    <app-owe-calculation [currentUserId]="userIdSignal() ?? ''"
-                         [memberId]="member.user.id"
-                         [payments]="member.payments" />
+    <app-owe-calculation [balance]="member.balance"
+                         [currencyCode]="member.currencyCode" />
   </section>
   }
   }

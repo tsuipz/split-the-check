@@ -13,11 +13,12 @@ import { PaymentsSelectors } from '@app/core/stores/payments';
 import { Payment, User } from '@app/core/models/interfaces';
 import { CommonModule } from '@angular/common';
 import { OweCalculationComponent } from './owe-calculation/owe-calculation.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 interface MemberWithPayments {
   user: User;
   payments: Payment[];
+  currencyCode: string;
+  balance: number;
 }
 
 const COMPONENTS = [OweCalculationComponent];
@@ -31,9 +32,7 @@ const COMPONENTS = [OweCalculationComponent];
 })
 export class PayBackComponent implements OnInit {
   private groupId$ = this.store.select(selectGroupId);
-  public userIdSignal = toSignal(
-    this.store.select(AuthSelectors.selectCurrentUserId),
-  );
+  public userId$ = this.store.select(AuthSelectors.selectCurrentUserId);
   public group$ = this.groupId$.pipe(
     filter((groupId): groupId is string => groupId !== undefined),
     switchMap((groupId) =>
@@ -80,9 +79,13 @@ export class PayBackComponent implements OnInit {
   public membersWithPayments$ = combineLatest([
     this.members$,
     this.payments$,
+    this.userId$,
   ]).pipe(
-    map(([members, payments]) => {
+    map(([members, payments, userId]) => {
       const membersWithPayments: MemberWithPayments[] = [];
+      if (!userId) {
+        return membersWithPayments;
+      }
 
       // For each payment, add the payment to the member's payments
       for (const key of Array.from(members.keys())) {
@@ -101,9 +104,22 @@ export class PayBackComponent implements OnInit {
           return isPayer || isPayee;
         });
 
+        // Get the first currency code from the payments
+        const currencyCode =
+          filteredPayments.length > 0 ? filteredPayments[0].currency : 'USD';
+
+        // Calculate the balance
+        const balance = this.handleBalanceCalculation(
+          userId,
+          key,
+          filteredPayments,
+        );
+
         membersWithPayments.push({
           user,
           payments: filteredPayments,
+          balance,
+          currencyCode,
         });
       }
 
@@ -120,5 +136,50 @@ export class PayBackComponent implements OnInit {
         this.store.dispatch(GroupsActions.loadGroup({ groupId }));
       }
     });
+  }
+
+  private handleBalanceCalculation(
+    currentUserId: string,
+    memberId: string,
+    payments: Payment[],
+  ): number {
+    let balance = 0;
+
+    for (const payment of payments) {
+      const totalPaid =
+        payment.paidBy.reduce((sum, p) => sum + p.amount, 0) || 0;
+      const payerMap = new Map(
+        payment.paidBy.map((p) => [p.memberId, p.amount]),
+      );
+
+      for (const split of payment.splits) {
+        const debtorId = split.memberId;
+        const value = split.value;
+
+        for (const [payerId, paidAmount] of payerMap.entries()) {
+          if (payerId === debtorId) continue; // skip self-payment
+
+          const share = (paidAmount / totalPaid) * value;
+
+          const isCurrentUserPayer = payerId === currentUserId;
+          const isMemberDebtor = debtorId === memberId;
+
+          const isMemberPayer = payerId === memberId;
+          const isCurrentUserDebtor = debtorId === currentUserId;
+
+          // current user paid, member owes them
+          if (isCurrentUserPayer && isMemberDebtor) {
+            balance += share;
+          }
+
+          // member paid, current user owes them
+          if (isMemberPayer && isCurrentUserDebtor) {
+            balance -= share;
+          }
+        }
+      }
+    }
+
+    return balance;
   }
 }
