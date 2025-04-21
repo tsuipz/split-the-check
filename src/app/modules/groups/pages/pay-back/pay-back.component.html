@@ -1,9 +1,8 @@
 <main class="flex flex-col gap-2">
   @for (member of membersWithPayments$ | async; track member.user.id) {
   @if (member.user.id !== (userId$ | async)) {
-
-  <section
-           class="flex flex-row gap-4 justify-between hover:bg-gray-100 p-2 rounded-lg cursor-pointer transition-colors duration-200">
+  <section class="flex flex-row gap-4 justify-between hover:bg-gray-100 p-2 rounded-lg cursor-pointer transition-colors duration-200"
+           (pointerdown)="onPayBackClick(member)">
     <article class="flex flex-col">
       <h4 class="font-medium">{{ member.user.name }}</h4>
       <p class="text-sm text-gray-500">{{ member.user.email }}</p>

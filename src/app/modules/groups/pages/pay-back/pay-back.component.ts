@@ -8,24 +8,31 @@ import { selectGroupWithMembersFromState } from '@app/core/stores/groups/groups.
 import { selectGroupId } from '@app/core/stores/router/router.selectors';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { switchMap, take, filter, map } from 'rxjs/operators';
-import { PaymentsSelectors } from '@app/core/stores/payments';
-import { Payment, User } from '@app/core/models/interfaces';
+import { switchMap, take, filter, map, withLatestFrom } from 'rxjs/operators';
+import { PaymentsActions, PaymentsSelectors } from '@app/core/stores/payments';
+import {
+  MemberWithPayments,
+  Payment,
+  User,
+  Currency,
+} from '@app/core/models/interfaces';
 import { CommonModule } from '@angular/common';
 import { OweCalculationComponent } from './owe-calculation/owe-calculation.component';
-
-interface MemberWithPayments {
-  user: User;
-  payments: Payment[];
-  currencyCode: string;
-  balance: number;
-}
+import {
+  MatDialog,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
+import { PayBackDialogComponent } from './pay-back-dialog/pay-back-dialog.component';
+import { FormGroup, FormControl } from '@angular/forms';
 
 const COMPONENTS = [OweCalculationComponent];
 
+const MUI = [MatDialogModule];
+
 @Component({
   selector: 'app-pay-back',
-  imports: [CommonModule, ...COMPONENTS],
+  imports: [CommonModule, ...COMPONENTS, ...MUI],
   templateUrl: './pay-back.component.html',
   styleUrl: './pay-back.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -115,6 +122,10 @@ export class PayBackComponent implements OnInit {
           filteredPayments,
         );
 
+        if (balance === 0) {
+          continue;
+        }
+
         membersWithPayments.push({
           user,
           payments: filteredPayments,
@@ -127,7 +138,7 @@ export class PayBackComponent implements OnInit {
     }),
   );
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private dialog: MatDialog) {}
 
   public ngOnInit(): void {
     this.groupId$.pipe(take(1)).subscribe((groupId) => {
@@ -136,6 +147,60 @@ export class PayBackComponent implements OnInit {
         this.store.dispatch(GroupsActions.loadGroup({ groupId }));
       }
     });
+  }
+
+  public onPayBackClick(member: MemberWithPayments): void {
+    const dialogRef: MatDialogRef<
+      PayBackDialogComponent,
+      FormGroup<{
+        currency: FormControl<Currency | null>;
+        amount: FormControl<number | null>;
+      }>
+    > = this.dialog.open(PayBackDialogComponent, {
+      data: member,
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(withLatestFrom(this.groupId$, this.userId$))
+      .subscribe(([result, groupId, userId]) => {
+        if (!result || result.invalid) {
+          return;
+        }
+        const formValue = result.getRawValue();
+
+        const amountValue = formValue.amount || 0;
+        const currencyValue = formValue.currency?.code || 'USD';
+
+        const payerId = member.balance > 0 ? member.user.id : userId;
+
+        const payeeId = member.balance > 0 ? userId : member.user.id;
+
+        const payment: Omit<Payment, 'id'> = {
+          amount: amountValue,
+          currency: currencyValue,
+          date: Timestamp.now(),
+          paidBy: [
+            {
+              memberId: payerId || '',
+              amount: amountValue,
+            },
+          ],
+          paymentType: 'debt',
+          groupId: groupId || '',
+          description: 'Payment to pay back',
+          category: 'Repayment',
+          splitType: 'exact',
+          splits: [
+            {
+              memberId: payeeId || '',
+              value: amountValue,
+            },
+          ],
+        };
+
+        this.store.dispatch(PaymentsActions.createPayment({ payment }));
+      });
   }
 
   private handleBalanceCalculation(

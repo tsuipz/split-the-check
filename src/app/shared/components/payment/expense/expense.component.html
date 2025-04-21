@@ -13,32 +13,11 @@
 
   <section class="flex gap-4">
     <!-- Currency -->
-    <mat-form-field class="w-full">
-      <mat-label>Currency</mat-label>
-      <mat-select formControlName="currency"
-                  placeholder="Select currency">
-        <mat-select-trigger>
-          {{ currency }}
-        </mat-select-trigger>
-        <mat-option *ngFor="let currency of currencyOptions"
-                    [value]="currency">
-          {{ currency.label }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <app-currency-form class="w-full"
+                       [control]="form.controls.currency" />
 
     <!-- Amount -->
-    <mat-form-field class="w-full">
-      <mat-label>Amount</mat-label>
-      <input matInput
-             formControlName="amount"
-             placeholder="0.00"
-             type="number"
-             required
-             (blur)="updateAmountErrorMessage()">
-      @if (form.controls.amount.invalid) {
-      <mat-error>{{amountErrorMessage()}}</mat-error>
-      }
-    </mat-form-field>
+    <app-amount-form class="w-full"
+                     [control]="form.controls.amount" />
   </section>
 </form>

@@ -1,0 +1,12 @@
+<mat-form-field class="w-full">
+  <mat-label>Amount</mat-label>
+  <input matInput
+         [formControl]="control"
+         placeholder="0.00"
+         type="number"
+         required
+         (blur)="onAmountErrorMessageBlur()">
+  @if (control.invalid) {
+  <mat-error>{{amountErrorMessageSignal()}}</mat-error>
+  }
+</mat-form-field>

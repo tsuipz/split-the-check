@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content>
+  <section class="flex gap-4">
+    <app-currency-form [control]="form.controls.currency" />
+    <app-amount-form [control]="form.controls.amount" />
+  </section>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button
+          (click)="onNoClick()">No Thanks</button>
+  <button mat-button
+          [mat-dialog-close]="form"
+          [disabled]="form.invalid"
+          cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

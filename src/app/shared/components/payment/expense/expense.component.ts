@@ -10,11 +10,16 @@ import { MatInputModule } from '@angular/material/input';
 import { CategoriesComponent } from './categories/categories.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Currency } from '@app/core/models/interfaces';
 import { CURRENCY_OPTIONS } from '@app/core/models/constants';
 import { ExpenseForm } from '../payment.form.service';
 import { Category } from '@app/core/models/interfaces/category.interface';
-const COMPONENTS = [CategoriesComponent];
+import { CurrencyFormComponent } from '../../currency-form/currency-form.component';
+import { AmountFormComponent } from '../../amount-form/amount-form.component';
+const COMPONENTS = [
+  CategoriesComponent,
+  CurrencyFormComponent,
+  AmountFormComponent,
+];
 
 const MUI = [MatFormFieldModule, MatInputModule, MatSelectModule];
 
@@ -37,13 +42,6 @@ export class ExpenseComponent {
   });
 
   amountErrorMessage = signal('');
-
-  public currencyOptions: Currency[] = CURRENCY_OPTIONS;
-
-  public get currency() {
-    const currency = this.form.controls.currency.value;
-    return currency ? currency.symbol : '';
-  }
 
   constructor(private fb: FormBuilder) {}
 
