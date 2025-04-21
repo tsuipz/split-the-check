@@ -1,6 +1,7 @@
 import { Timestamp } from '@angular/fire/firestore';
 import { CategoryType, PaymentType } from '../types';
 import { SplitType } from '@app/shared/components/payment/payment.form.service';
+import { User } from './user.interface';
 
 export interface PaymentSplit {
   memberId: string; // UID of the member being charged
@@ -23,4 +24,11 @@ export interface Payment {
   category: CategoryType; // Optional category
   splitType: SplitType; // How it's split
   splits: PaymentSplit[];
+}
+
+export interface MemberWithPayments {
+  user: User;
+  payments: Payment[];
+  currencyCode: string;
+  balance: number;
 }

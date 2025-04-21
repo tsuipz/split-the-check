@@ -71,8 +71,15 @@ export class PaymentsService {
     return deleteDoc(paymentRef);
   }
 
-  getPaymentsByGroup(groupId: string): Observable<Payment[]> {
+  /**
+   * Get payments by group
+   * @param groupId - Group id
+   * @returns Payments
+   */
+  public getPaymentsByGroup(groupId: string): Observable<Payment[]> {
     const q = query(this.paymentsCollection, where('groupId', '==', groupId));
-    return collectionData(q, { idField: 'id' }) as Observable<Payment[]>;
+    return collectionData(q, { idField: 'id' }).pipe(
+      map((payments) => payments as Payment[]),
+    );
   }
 }

@@ -70,3 +70,21 @@ export const deletePaymentFailure = createAction(
   '[Payments] Delete Payment Failure',
   props<{ error: HttpErrorResponse }>(),
 );
+
+/**
+ * Get payments by group id
+ */
+export const getPaymentsByGroup = createAction(
+  '[Payments] Get Payments By Group',
+  props<{ groupId: string }>(),
+);
+
+export const getPaymentsByGroupSuccess = createAction(
+  '[Payments] Get Payments By Group Success',
+  props<{ payments: Payment[] }>(),
+);
+
+export const getPaymentsByGroupFailure = createAction(
+  '[Payments] Get Payments By Group Failure',
+  props<{ error: HttpErrorResponse }>(),
+);

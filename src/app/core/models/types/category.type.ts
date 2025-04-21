@@ -1,1 +1,1 @@
-export type CategoryType = 'General' | 'Dining Out' | 'Groceries';
+export type CategoryType = 'General' | 'Dining Out' | 'Groceries' | 'Repayment';

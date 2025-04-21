@@ -45,7 +45,6 @@ export class GroupComponent implements OnInit {
     filter((groupId): groupId is string => groupId !== undefined),
     switchMap((groupId) => this.store.select(selectGroupById(groupId))),
   );
-
   public groupWithMembers$: Observable<GroupWithMembers> = this.group$.pipe(
     switchMap((group) => {
       if (!group) {
@@ -102,6 +101,13 @@ export class GroupComponent implements OnInit {
           );
         }
       });
+  }
+
+  public onRouteToPayBack(): void {
+    // go to the pay back page
+    this.router.navigate(['.', 'pay-back'], {
+      relativeTo: this.activatedRoute,
+    });
   }
 
   public onRouteToPayment(): void {

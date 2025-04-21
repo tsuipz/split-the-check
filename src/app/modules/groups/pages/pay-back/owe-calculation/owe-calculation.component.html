@@ -1,0 +1,7 @@
+<section [class.text-red-500]="userTitle === 'you owe'"
+         [class.text-green-500]="userTitle === 'owes you'">
+  <p class="text-right">
+    {{ userTitle }}
+  </p>
+  <p class="text-right">{{ userPaidAmount | currency: currencyCode }}</p>
+</section>

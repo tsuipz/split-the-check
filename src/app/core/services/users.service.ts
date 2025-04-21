@@ -25,7 +25,7 @@ export class UsersService {
       return from([]);
     }
 
-    const searchTermLower = searchTerm.toLowerCase();
+    const searchTermLower = searchTerm;
 
     // Create a single query that searches both name and email
     const usersQuery = query(
