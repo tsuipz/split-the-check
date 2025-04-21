@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { GroupWithMembers } from '@app/core/stores/groups/groups.selectors';
-import { AuthActions } from '@app/core/stores/auth';
+import { AuthActions, AuthSelectors } from '@app/core/stores/auth';
 import { combineLatest, Observable } from 'rxjs';
 import { GroupsActions, GroupsSelectors } from '@app/core/stores/groups';
 import { selectGroupWithMembersFromState } from '@app/core/stores/groups/groups.selectors';
@@ -12,21 +12,28 @@ import { switchMap, take, filter, map } from 'rxjs/operators';
 import { PaymentsSelectors } from '@app/core/stores/payments';
 import { Payment, User } from '@app/core/models/interfaces';
 import { CommonModule } from '@angular/common';
+import { OweCalculationComponent } from './owe-calculation/owe-calculation.component';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 interface MemberWithPayments {
   user: User;
   payments: Payment[];
 }
 
+const COMPONENTS = [OweCalculationComponent];
+
 @Component({
   selector: 'app-pay-back',
-  imports: [CommonModule],
+  imports: [CommonModule, ...COMPONENTS],
   templateUrl: './pay-back.component.html',
   styleUrl: './pay-back.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayBackComponent implements OnInit {
   private groupId$ = this.store.select(selectGroupId);
+  public userIdSignal = toSignal(
+    this.store.select(AuthSelectors.selectCurrentUserId),
+  );
   public group$ = this.groupId$.pipe(
     filter((groupId): groupId is string => groupId !== undefined),
     switchMap((groupId) =>

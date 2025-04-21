@@ -1,14 +1,18 @@
 <main class="flex flex-col gap-4">
   @for (member of membersWithPayments$ | async; track member.user.id) {
+  @if (member.user.id !== userIdSignal()) {
+
   <section class="flex flex-row gap-4 justify-between">
     <article class="flex flex-col">
       <h4 class="font-medium">{{ member.user.name }}</h4>
       <p class="text-sm text-gray-500">{{ member.user.email }}</p>
     </article>
 
-    <article>
-      Payment text
-    </article>
+
+    <app-owe-calculation [currentUserId]="userIdSignal() ?? ''"
+                         [memberId]="member.user.id"
+                         [payments]="member.payments" />
   </section>
+  }
   }
 </main>
