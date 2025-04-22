@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Category } from '@app/core/models/interfaces/category.interface';
+import { CATEGORIES } from '@app/core/models/constants/category.constant';
 
 const MUI = [MatListModule, MatIconModule, MatDialogModule, MatButtonModule];
 
@@ -20,20 +21,7 @@ export class CategoriesDialogComponent {
     selectedCategory: this.fb.control<Category[]>([], [Validators.required]),
   });
 
-  public categories: Category[] = [
-    {
-      name: 'General',
-      icon: 'receipt',
-    },
-    {
-      name: 'Dining Out',
-      icon: 'restaurant',
-    },
-    {
-      name: 'Groceries',
-      icon: 'shopping_cart',
-    },
-  ];
+  public categories: Category[] = CATEGORIES;
 
   constructor(private fb: FormBuilder) {}
 }
