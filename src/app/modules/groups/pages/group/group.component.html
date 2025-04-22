@@ -1,4 +1,4 @@
-<ng-container *ngIf="groupWithMembers$ | async as group">
+<ng-container *ngIf="groupWithMembersSignal() as group">
   <section class="flex gap-2">
     <button mat-flat-button
             (click)="onRouteToPayBack()">Pay Back</button>
@@ -28,4 +28,7 @@
       </button>
     </mat-card-content>
   </mat-card>
+
+  <app-payments-history [users]="membersComputed"
+                        [payments]="paymentsSignal"></app-payments-history>
 </ng-container>

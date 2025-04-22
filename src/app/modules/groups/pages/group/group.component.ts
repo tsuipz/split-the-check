@@ -1,8 +1,8 @@
-import { Component, OnInit, DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, OnInit, DestroyRef, inject, computed } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { selectGroupId } from '@app/core/stores/router/router.selectors';
-import { take, switchMap, filter, Observable, of } from 'rxjs';
+import { take, switchMap, filter, of } from 'rxjs';
 import { GroupsActions } from '@app/core/stores/groups';
 import { AuthActions } from '@app/core/stores/auth';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +22,10 @@ import {
 import { UserSearchDialogComponent } from '@app/shared/components/user-search-dialog/user-search-dialog.component';
 import { User } from '@app/core/models/interfaces';
 import { Timestamp } from '@angular/fire/firestore';
+import { PaymentsSelectors } from '@app/core/stores/payments';
+import { PaymentsHistoryComponent } from '@app/shared/components/payments-history/payments-history.component';
+
+const COMPONENTS = [PaymentsHistoryComponent];
 
 @Component({
   selector: 'app-group',
@@ -34,6 +38,7 @@ import { Timestamp } from '@angular/fire/firestore';
     MatCardModule,
     MatDialogModule,
     MatIconModule,
+    ...COMPONENTS,
   ],
   templateUrl: './group.component.html',
   styleUrl: './group.component.scss',
@@ -45,25 +50,32 @@ export class GroupComponent implements OnInit {
     filter((groupId): groupId is string => groupId !== undefined),
     switchMap((groupId) => this.store.select(selectGroupById(groupId))),
   );
-  public groupWithMembers$: Observable<GroupWithMembers> = this.group$.pipe(
-    switchMap((group) => {
-      if (!group) {
-        const emptyGroup: GroupWithMembers = {
-          id: '',
-          name: '',
-          members: [],
-          totalSpent: 0,
-          adminOwners: [],
-          createdAt: Timestamp.now(),
-        };
-        return of(emptyGroup);
-      }
+  public groupWithMembersSignal = toSignal(
+    this.group$.pipe(
+      switchMap((group) => {
+        if (!group) {
+          const emptyGroup: GroupWithMembers = {
+            id: '',
+            name: '',
+            members: [],
+            totalSpent: 0,
+            adminOwners: [],
+            createdAt: Timestamp.now(),
+          };
+          return of(emptyGroup);
+        }
 
-      this.store.dispatch(
-        AuthActions.loadUsersByIds({ userIds: group.members }),
-      );
-      return this.store.select(selectGroupWithMembersFromState(group));
-    }),
+        this.store.dispatch(
+          AuthActions.loadUsersByIds({ userIds: group.members }),
+        );
+        return this.store.select(selectGroupWithMembersFromState(group));
+      }),
+    ),
+    { initialValue: null },
+  );
+  public paymentsSignal = toSignal(
+    this.store.select(PaymentsSelectors.selectAllPayments),
+    { initialValue: [] },
   );
 
   constructor(
@@ -82,6 +94,15 @@ export class GroupComponent implements OnInit {
       }
     });
   }
+
+  public membersComputed = computed(() => {
+    const group = this.groupWithMembersSignal();
+    if (!group) {
+      return [];
+    }
+
+    return group.members;
+  });
 
   public openAddMemberDialog(groupId: string): void {
     const dialogRef = this.dialog.open(UserSearchDialogComponent, {

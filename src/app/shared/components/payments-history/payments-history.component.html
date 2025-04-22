@@ -1,0 +1,13 @@
+<main>
+  @for (payment of payments(); track payment.id) {
+  <section>
+    <article class="flex flex-col">
+
+      <h4 class="font-medium">{{ getPayer(payment.paidBy) }}</h4>
+
+      <p class="text-sm text-gray-500">{{ payment.amount | currency }}</p>
+
+    </article>
+  </section>
+  }
+</main>
