@@ -1,0 +1,41 @@
+<mat-card>
+  <mat-card-content>
+    <div class="flex flex-col gap-4">
+      <!-- Overall Balance -->
+      <div class="flex items-center justify-between">
+        <span class="text-lg font-medium">Your Balance</span>
+        <span class="text-lg font-medium"
+              [class.text-green-600]="overallBalance() > 0"
+              [class.text-red-600]="overallBalance() < 0">
+          {{ overallBalance() | currency }}
+        </span>
+      </div>
+
+      <!-- People who owe you -->
+      @if (peopleWhoOweYou().length > 0) {
+      <div class="flex flex-col gap-2">
+        <span class="font-medium text-green-600">People who owe you</span>
+        @for (debt of peopleWhoOweYou(); track debt.userId) {
+        <div class="flex items-center justify-between">
+          <span>{{ getUserName(debt.userId) }}</span>
+          <span class="text-green-600">{{ debt.amount | currency }}</span>
+        </div>
+        }
+      </div>
+      }
+
+      <!-- People you owe -->
+      @if (peopleYouOwe().length > 0) {
+      <div class="flex flex-col gap-2">
+        <span class="font-medium text-red-600">People you owe</span>
+        @for (debt of peopleYouOwe(); track debt.userId) {
+        <div class="flex items-center justify-between">
+          <span>{{ getUserName(debt.userId) }}</span>
+          <span class="text-red-600">{{ debt.amount | currency }}</span>
+        </div>
+        }
+      </div>
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

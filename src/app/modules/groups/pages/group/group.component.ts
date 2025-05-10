@@ -25,8 +25,17 @@ import { Timestamp } from '@angular/fire/firestore';
 import { PaymentsSelectors } from '@app/core/stores/payments';
 import { PaymentsHistoryComponent } from '@app/shared/components/payments-history/payments-history.component';
 import { EditGroupNameDialogComponent } from '@app/shared/components/edit-group-name-dialog/edit-group-name-dialog.component';
+import { GroupBalanceSummaryComponent } from '@app/shared/components/group-balance-summary/group-balance-summary.component';
+import { adapter } from '@app/core/stores/auth/auth.reducers';
+import { selectAuthState } from '@app/core/stores/auth/auth.selectors';
+import { createSelector } from '@ngrx/store';
 
-const COMPONENTS = [PaymentsHistoryComponent];
+const COMPONENTS = [PaymentsHistoryComponent, GroupBalanceSummaryComponent];
+
+const selectAllUsers = createSelector(
+  selectAuthState,
+  adapter.getSelectors().selectAll,
+);
 
 @Component({
   selector: 'app-group',
@@ -78,6 +87,21 @@ export class GroupComponent implements OnInit {
     this.store.select(PaymentsSelectors.selectAllPayments),
     { initialValue: [] },
   );
+  public usersSignal = toSignal(this.store.select(selectAllUsers), {
+    initialValue: [],
+  });
+
+  public allGroupUsersLoaded = computed(() => {
+    const group = this.groupWithMembersSignal();
+    const users = this.usersSignal();
+    if (!group || !group.members) return false;
+    const userIds = users.map((u) => u.id);
+    // group.members can be array of user objects or IDs, handle both
+    return group.members.every((member) => {
+      const id = typeof member === 'string' ? member : member.id;
+      return userIds.includes(id);
+    });
+  });
 
   constructor(
     private store: Store,
