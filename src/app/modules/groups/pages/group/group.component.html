@@ -1,4 +1,9 @@
 <ng-container *ngIf="groupWithMembersSignal() as group">
+  <ng-container *ngIf="allGroupUsersLoaded()">
+    <app-group-balance-summary [payments]="paymentsSignal"
+                               [users]="usersSignal()"></app-group-balance-summary>
+  </ng-container>
+
   <section class="flex gap-2">
     <button mat-flat-button
             (click)="onRouteToPayBack()">Pay Back</button>
