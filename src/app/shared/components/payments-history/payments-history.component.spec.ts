@@ -1,17 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaymentHistoryComponent } from './payments-history.component';
+import { PaymentsHistoryComponent } from './payments-history.component';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('PaymentHistoryComponent', () => {
-  let component: PaymentHistoryComponent;
-  let fixture: ComponentFixture<PaymentHistoryComponent>;
+  let component: PaymentsHistoryComponent;
+  let fixture: ComponentFixture<PaymentsHistoryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaymentHistoryComponent],
+      imports: [PaymentsHistoryComponent],
+      providers: [provideMockStore()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PaymentHistoryComponent);
+    fixture = TestBed.createComponent(PaymentsHistoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
