@@ -113,4 +113,22 @@ export class GroupsService {
       }),
     );
   }
+
+  public updateGroupName(groupId: string, name: string): Observable<Group> {
+    const groupDoc = doc(this.groupsCollection, groupId);
+
+    return from(getDoc(groupDoc)).pipe(
+      map((doc) => doc.data() as Group),
+      switchMap((group) => {
+        const updatedGroup: Group = {
+          ...group,
+          name,
+        };
+
+        return from(updateDoc(groupDoc, { name })).pipe(
+          map(() => updatedGroup),
+        );
+      }),
+    );
+  }
 }

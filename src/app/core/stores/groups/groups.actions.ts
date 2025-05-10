@@ -67,3 +67,21 @@ export const addMembersToGroupFailure = createAction(
   '[Groups] Add Members To Group Failure',
   props<{ error: HttpErrorResponse }>(),
 );
+
+/**
+ * Update group name actions
+ */
+export const updateGroupName = createAction(
+  '[Groups] Update Group Name',
+  props<{ groupId: string; name: string }>(),
+);
+
+export const updateGroupNameSuccess = createAction(
+  '[Groups] Update Group Name Success',
+  props<{ group: Group }>(),
+);
+
+export const updateGroupNameFailure = createAction(
+  '[Groups] Update Group Name Failure',
+  props<{ error: HttpErrorResponse }>(),
+);

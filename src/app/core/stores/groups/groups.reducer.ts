@@ -131,4 +131,32 @@ export const groupsReducer = createReducer(
       isLoading: false,
     }),
   ),
+
+  // Update Group Name
+  on(
+    GroupsActions.updateGroupName,
+    (state): GroupsState => ({
+      ...state,
+      isLoading: true,
+      error: null,
+    }),
+  ),
+
+  on(
+    GroupsActions.updateGroupNameSuccess,
+    (state, { group }): GroupsState =>
+      groupsAdapter.upsertOne(group, {
+        ...state,
+        isLoading: false,
+      }),
+  ),
+
+  on(
+    GroupsActions.updateGroupNameFailure,
+    (state, { error }): GroupsState => ({
+      ...state,
+      error,
+      isLoading: false,
+    }),
+  ),
 );
