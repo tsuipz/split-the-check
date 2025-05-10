@@ -24,6 +24,7 @@ import { User } from '@app/core/models/interfaces';
 import { Timestamp } from '@angular/fire/firestore';
 import { PaymentsSelectors } from '@app/core/stores/payments';
 import { PaymentsHistoryComponent } from '@app/shared/components/payments-history/payments-history.component';
+import { EditGroupNameDialogComponent } from '@app/shared/components/edit-group-name-dialog/edit-group-name-dialog.component';
 
 const COMPONENTS = [PaymentsHistoryComponent];
 
@@ -134,5 +135,24 @@ export class GroupComponent implements OnInit {
   public onRouteToPayment(): void {
     // go to the payment page
     this.router.navigate(['.', 'payment'], { relativeTo: this.activatedRoute });
+  }
+
+  public openEditGroupNameDialog(groupId: string, currentName: string): void {
+    const dialogRef = this.dialog.open(EditGroupNameDialogComponent, {
+      width: '400px',
+      data: { name: currentName },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((result) => {
+        if (result && result.valid) {
+          const newName = result.getRawValue().name;
+          this.store.dispatch(
+            GroupsActions.updateGroupName({ groupId, name: newName }),
+          );
+        }
+      });
   }
 }

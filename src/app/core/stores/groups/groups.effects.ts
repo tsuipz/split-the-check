@@ -155,4 +155,18 @@ export class GroupsEffects {
       ),
     );
   });
+
+  public updateGroupName$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(GroupsActions.updateGroupName),
+      mergeMap(({ groupId, name }) => {
+        return this.groupsService.updateGroupName(groupId, name).pipe(
+          map((group) => GroupsActions.updateGroupNameSuccess({ group })),
+          catchError((error) => {
+            return of(GroupsActions.updateGroupNameFailure({ error }));
+          }),
+        );
+      }),
+    );
+  });
 }
