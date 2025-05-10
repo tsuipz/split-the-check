@@ -6,3 +6,20 @@ mat-sidenav {
 mat-sidenav-content {
   padding: 1.5rem;
 }
+
+@media (max-width: 600px) {
+  mat-sidenav {
+    width: 80vw !important;
+    min-width: 0 !important;
+  }
+  .mobile-hamburger {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    background: white;
+  }
+  mat-sidenav-content {
+    padding: 0.5rem !important;
+  }
+}
