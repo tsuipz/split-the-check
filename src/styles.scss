@@ -3,5 +3,54 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+@media (max-width: 600px) {
+  .flex,
+  .flex-row,
+  .flex-col {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+  .p-4,
+  .mb-2,
+  .gap-6,
+  .gap-3 {
+    padding: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+  .font-medium,
+  .text-lg,
+  .text-base {
+    font-size: 1rem !important;
+  }
+  mat-card,
+  section,
+  .mat-expansion-panel {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .mat-card-content,
+  .mat-card-header {
+    padding: 0.5rem !important;
+  }
+  button,
+  input,
+  .mat-form-field {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .table-responsive,
+  .list-responsive {
+    overflow-x: auto;
+    display: block;
+  }
+}
