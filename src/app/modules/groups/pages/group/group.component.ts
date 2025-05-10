@@ -26,11 +26,16 @@ import { PaymentsSelectors } from '@app/core/stores/payments';
 import { PaymentsHistoryComponent } from '@app/shared/components/payments-history/payments-history.component';
 import { EditGroupNameDialogComponent } from '@app/shared/components/edit-group-name-dialog/edit-group-name-dialog.component';
 import { GroupBalanceSummaryComponent } from '@app/shared/components/group-balance-summary/group-balance-summary.component';
+import { PaymentVisualizationComponent } from '@app/shared/components/payment-visualization/payment-visualization.component';
 import { adapter } from '@app/core/stores/auth/auth.reducers';
 import { selectAuthState } from '@app/core/stores/auth/auth.selectors';
 import { createSelector } from '@ngrx/store';
 
-const COMPONENTS = [PaymentsHistoryComponent, GroupBalanceSummaryComponent];
+const COMPONENTS = [
+  PaymentsHistoryComponent,
+  GroupBalanceSummaryComponent,
+  PaymentVisualizationComponent,
+];
 
 const selectAllUsers = createSelector(
   selectAuthState,

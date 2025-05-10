@@ -1,5 +1,7 @@
 <ng-container *ngIf="groupWithMembersSignal() as group">
   <ng-container *ngIf="allGroupUsersLoaded()">
+    <app-payment-visualization [payments]="paymentsSignal"
+                               [users]="usersSignal()"></app-payment-visualization>
     <app-group-balance-summary [payments]="paymentsSignal"
                                [users]="usersSignal()"></app-group-balance-summary>
   </ng-container>
