@@ -97,4 +97,9 @@ export class GroupBalanceSummaryComponent {
     const payments = this.payments();
     return payments.reduce((sum, payment) => sum + payment.amount, 0);
   });
+
+  public currencyCode = computed(() => {
+    const payments = this.payments();
+    return payments.length > 0 ? payments[0].currency : 'USD';
+  });
 }

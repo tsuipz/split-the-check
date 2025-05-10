@@ -4,7 +4,7 @@
       <!-- Total Group Paid -->
       <div class="flex items-center justify-between">
         <span class="text-base">Total Group Paid</span>
-        <span class="font-medium">{{ totalGroupPaid() | currency }}</span>
+        <span class="font-medium">{{ totalGroupPaid() | currency:currencyCode() }}</span>
       </div>
 
       <!-- Overall Balance -->
@@ -13,7 +13,7 @@
         <span class="text-lg font-medium"
               [class.text-green-600]="overallBalance() > 0"
               [class.text-red-600]="overallBalance() < 0">
-          {{ overallBalance() | currency }}
+          {{ overallBalance() | currency:currencyCode() }}
         </span>
       </div>
 
@@ -24,7 +24,7 @@
         @for (debt of peopleWhoOweYou(); track debt.userId) {
         <div class="flex items-center justify-between">
           <span>{{ getUserName(debt.userId) }}</span>
-          <span class="text-green-600">{{ debt.amount | currency }}</span>
+          <span class="text-green-600">{{ debt.amount | currency:currencyCode() }}</span>
         </div>
         }
       </div>
@@ -37,7 +37,7 @@
         @for (debt of peopleYouOwe(); track debt.userId) {
         <div class="flex items-center justify-between">
           <span>{{ getUserName(debt.userId) }}</span>
-          <span class="text-red-600">{{ debt.amount | currency }}</span>
+          <span class="text-red-600">{{ debt.amount | currency:currencyCode() }}</span>
         </div>
         }
       </div>
