@@ -4,7 +4,8 @@
     <article class="flex flex-col">
       <h4>{{ payment.description }}</h4>
       @if (isUserInvolved(payment)) {
-      <p class="text-sm text-gray-500">{{ getPayer(payment.paidBy) }} paid {{ payment.amount | currency }}</p>
+      <p class="text-sm text-gray-500">{{ getPayer(payment.paidBy) }} paid {{ payment.amount | currency:payment.currency
+        }}</p>
       } @else {
       <p class="text-sm text-gray-500">You were not involved</p>
       }
@@ -12,9 +13,10 @@
 
     @if (isUserInvolved(payment)) {
     @if (getUserPaymentInfo(payment).role === 'borrowed') {
-    <p class="text-sm text-red-500">You borrowed {{ getUserPaymentInfo(payment).amount | currency }}</p>
+    <p class="text-sm text-red-500">You borrowed {{ getUserPaymentInfo(payment).amount | currency:payment.currency }}
+    </p>
     } @else if (getUserPaymentInfo(payment).role === 'lent') {
-    <p class="text-sm text-green-500">You lent {{ getUserPaymentInfo(payment).amount | currency }}</p>
+    <p class="text-sm text-green-500">You lent {{ getUserPaymentInfo(payment).amount | currency:payment.currency }}</p>
     }
     }
   </section>
