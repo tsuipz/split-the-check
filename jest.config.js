@@ -8,6 +8,8 @@ module.exports = {
     '@core/(.*)': '<rootDir>/src/app/core/$1',
     '@env/(.*)': '<rootDir>/src/environments/$1',
     '@shared/(.*)': '<rootDir>/src/app/shared/$1',
+    '^@angular/core/testing$':
+      '<rootDir>/node_modules/@angular/core/fesm2022/testing.mjs',
   },
   testEnvironment: 'jsdom',
   transform: {
@@ -19,6 +21,9 @@ module.exports = {
       },
     ],
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(@swimlane/ngx-charts|d3-.*|internmap|delaunator|robust-predicates|@angular|rxjs|@ngrx|@testing-library))',
+  ],
   moduleFileExtensions: ['ts', 'html', 'js', 'json', 'mjs'],
   resolver: 'jest-preset-angular/build/resolvers/ng-jest-resolver.js',
   watchPlugins: [

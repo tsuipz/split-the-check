@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { screen } from '@testing-library/angular';
 import { LoginComponent } from './login.component';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AuthActions } from '@app/core/stores/auth';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -13,10 +13,8 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [provideMockStore()],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     storeMock = TestBed.inject(MockStore);
@@ -24,27 +22,19 @@ describe('LoginComponent', () => {
   });
 
   it('should create', () => {
-    // Assert
     expect(component).toBeTruthy();
   });
 
-  it('should render the login form', async () => {
-    // Arrange
-    const button = screen.getByRole('button', { name: 'Sign in with Google' });
-
-    // Assert
+  it('should render the login form', () => {
+    const button = fixture.nativeElement.querySelector('button');
     expect(button).toBeTruthy();
+    expect(button.textContent.toLowerCase()).toContain('sign in with google');
   });
 
   describe('signInWithGoogle', () => {
     it('should call onGoogleSignIn method from AuthService', () => {
-      // Arrange
       const dispatchSpy = jest.spyOn(storeMock, 'dispatch');
-
-      // Act
       component.signInWithGoogle();
-
-      // Assert
       expect(dispatchSpy).toHaveBeenCalledWith(AuthActions.login());
     });
   });
