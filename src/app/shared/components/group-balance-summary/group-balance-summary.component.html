@@ -1,6 +1,12 @@
 <mat-card>
   <mat-card-content>
     <div class="flex flex-col gap-4">
+      <!-- Total Group Paid -->
+      <div class="flex items-center justify-between">
+        <span class="text-base">Total Group Paid</span>
+        <span class="font-medium">{{ totalGroupPaid() | currency }}</span>
+      </div>
+
       <!-- Overall Balance -->
       <div class="flex items-center justify-between">
         <span class="text-lg font-medium">Your Balance</span>
