@@ -1,13 +1,22 @@
 <main>
   @for (payment of payments(); track payment.id) {
-  <section>
+  <section class="flex justify-between items-center">
     <article class="flex flex-col">
-
-      <h4 class="font-medium">{{ getPayer(payment.paidBy) }}</h4>
-
-      <p class="text-sm text-gray-500">{{ payment.amount | currency }}</p>
-
+      <h4>{{ payment.description }}</h4>
+      @if (isUserInvolved(payment)) {
+      <p class="text-sm text-gray-500">{{ getPayer(payment.paidBy) }} paid {{ payment.amount | currency }}</p>
+      } @else {
+      <p class="text-sm text-gray-500">You were not involved</p>
+      }
     </article>
+
+    @if (isUserInvolved(payment)) {
+    @if (getUserPaymentInfo(payment).role === 'borrowed') {
+    <p class="text-sm text-red-500">You borrowed {{ getUserPaymentInfo(payment).amount | currency }}</p>
+    } @else if (getUserPaymentInfo(payment).role === 'lent') {
+    <p class="text-sm text-green-500">You lent {{ getUserPaymentInfo(payment).amount | currency }}</p>
+    }
+    }
   </section>
   }
 </main>

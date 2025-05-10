@@ -56,4 +56,47 @@ export class PaymentsHistoryComponent {
 
     return 'Multiple';
   }
+
+  public isUserInvolved(payment: Payment): boolean {
+    const currentUserId = this.currentUserIdSignal();
+    if (!currentUserId) return false;
+
+    // Check if user is in paidBy
+    const isPayer = payment.paidBy.some(
+      (payer) => payer.memberId === currentUserId,
+    );
+    if (isPayer) return true;
+
+    // Check if user is in splits
+    const isPayee = payment.splits.some(
+      (split) => split.memberId === currentUserId,
+    );
+    return isPayee;
+  }
+
+  public getUserPaymentInfo(payment: Payment): {
+    role: 'borrowed' | 'lent' | 'none';
+    amount: number;
+  } {
+    const currentUserId = this.currentUserIdSignal();
+    if (!currentUserId) return { role: 'none', amount: 0 };
+
+    // Calculate total amount paid by the user
+    const paidAmount = payment.paidBy
+      .filter((payer) => payer.memberId === currentUserId)
+      .reduce((sum, payer) => sum + payer.amount, 0);
+
+    // Calculate total amount owed by the user
+    const owedAmount = payment.splits
+      .filter((split) => split.memberId === currentUserId)
+      .reduce((sum, split) => sum + split.value, 0);
+
+    if (paidAmount > owedAmount) {
+      return { role: 'lent', amount: paidAmount - owedAmount };
+    } else if (owedAmount > paidAmount) {
+      return { role: 'borrowed', amount: owedAmount - paidAmount };
+    }
+
+    return { role: 'none', amount: 0 };
+  }
 }
