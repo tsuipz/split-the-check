@@ -83,4 +83,18 @@ export class GroupBalanceSummaryComponent {
   public overallBalance = computed(() => {
     return this.calculateDebts().reduce((sum, debt) => sum + debt.amount, 0);
   });
+
+  public totalSpentByUser = computed(() => {
+    const payments = this.payments();
+    const currentUserId = this.currentUserId();
+    return payments
+      .flatMap((payment) => payment.paidBy)
+      .filter((p) => p.memberId === currentUserId)
+      .reduce((sum, p) => sum + p.amount, 0);
+  });
+
+  public totalGroupPaid = computed(() => {
+    const payments = this.payments();
+    return payments.reduce((sum, payment) => sum + payment.amount, 0);
+  });
 }
